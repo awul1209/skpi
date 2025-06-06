@@ -1,0 +1,51 @@
+.kotak-histori{
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+.kotak-histori .table-historikrp h3{
+    font-size: 16px;
+    margin-top: 20px;
+    color:#042366;
+    /* border: 1px solid black; */
+}
+
+.kotak-hasil-histori{
+  background-color: #fff;
+  padding: 0px 10px;
+}
+
+.kotak-histori .kotak-histori-header{
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  background-color: #fff;
+  border-bottom: 1px solid rgb(196, 195, 195);
+  padding: 15px 0px;
+}
+.kotak-histori .kotak-histori-header .kotak1{
+flex: 1;
+padding: 0px 5px;
+}
+.kotak-histori .kotak-histori-header .kotak2{
+  padding: 0px 5px;
+flex: 1;
+text-align: end;
+}
+.kotak-histori .kotak-histori-header h2{
+color: rgb(53, 53, 53);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0px;
+}
+.kotak-histori .kotak-histori-header a{
+
+
+}
+@media screen and (max-width: 480px) {
+    .kotak-histori{
+      width: 105%;
+      margin: auto;
+      margin-left: -9px;
+  }
+}

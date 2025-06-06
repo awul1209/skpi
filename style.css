@@ -1,0 +1,15 @@
+#kotak{
+    /* border:1px solid black; */
+}
+/* .none{
+    display: none;
+    border: 1px solid black;
+} */
+@media (max-width: 400px) {
+   #kotak{
+    
+    width: 300px;
+    display: flex;
+    height: 100vh;
+   }
+  }

@@ -1,0 +1,442 @@
+/* bio foto*/
+.header-bio h3{
+font-size: 22px;
+margin-bottom: 0px;
+background-color: #fff;
+padding: 15px 12px 0px;
+border-top-right-radius: 5px;
+border-top-left-radius: 5px;
+}
+.biodata{
+    /* border: 1px solid black; */
+    display: flex;
+    gap: 20px;
+    background-color: #fff;
+    padding: 0px 10px 10px;
+}
+.biodata table{
+  padding: 0px 5px 0px 5px;
+}
+.kiri{
+    /* border: 1px solid black; */
+    flex: 1;
+}
+.kiri .kotak-foto{
+    padding: 15px 5px 10px 5px;
+    border: 1px solid rgb(219, 219, 219);
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+}
+.kiri .kotak-foto .foto{
+    width: 100%;
+text-align: center;
+}
+.kiri .kotak-foto .foto h2{
+    font-weight: 500;
+    font-size: 24px;
+    margin-top: 12px;
+    margin-bottom: 0px;
+}
+.kiri .kotak-foto .foto p{
+    font-weight: 500;
+font-size: 16px;
+color: #858484;
+margin-bottom: 0px;
+}
+
+.kiri .kotak-foto .tombol{
+    margin: auto;
+    margin-top: 10px;
+    width: 90%;
+    text-align: center;
+    border-top: 2px solid rgb(219, 219, 219);
+    display: flex;
+    justify-content: space-around;
+}
+.kiri .kotak-foto .tombol .btn{
+    margin-top: 9px;
+    width: 140px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.kanan{
+    /* border: 1px solid black; */
+    height: 200px;
+    flex: 1;
+
+}
+.biodata table tr{
+    border: 1px solid rgb(219, 219, 219);
+    width: 80%;
+}
+/* bio end foto */
+
+/* bio identitas */
+.biodata .kiri .kotak-identitas {
+    background-color: #fff;
+    border: 1px solid #c7c6c6;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+  }
+  
+  .biodata .kiri .kotak-identitas h2 {
+    font-size: 18px;
+    background-color: #e6e9f8;
+    padding: 10px;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .biodata .kiri .kotak-identitas table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px;
+  }
+  
+  .biodata .kiri .kotak-identitas td {
+    padding: 8px 15px;
+    vertical-align: top;
+  }
+  
+  .biodata .kiri .kotak-identitas td:first-child {
+    width: 35%;
+    font-weight: bold;
+  }
+/* bio end identitas */
+
+
+/* kondisi */
+.biodata .kiri .kotak-kondisi {
+    background-color: #fff;
+    border: 1px solid #c7c6c6;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+  }
+  
+  .biodata .kiri .kotak-kondisi h2 {
+    font-size: 18px;
+    background-color: #e6e9f8;
+    padding: 10px;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .biodata .kiri .kotak-kondisi table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px;
+  }
+  
+  .biodata .kiri .kotak-kondisi td {
+    padding: 8px 15px;
+    vertical-align: top;
+  }
+  
+  .biodata .kiri .kotak-kondisi td:first-child {
+    width: 35%;
+    font-weight: bold;
+  }
+/* end kondisi */
+
+
+/* saudara edit */
+.biodata .kiri .kotak-saudara-edit {
+    background-color: #fff;
+    border: 1px solid #c7c6c6;
+    margin: auto;
+    border-radius: 5px;
+    margin-top: 20px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+  }
+   .biodata .kiri .kotak-saudara-edit h2 {
+    font-size: 18px;
+    background-color: #e6e9f8;
+    padding: 10px;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .biodata .kiri .kotak-saudara-edit table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px;
+  }
+  
+  .biodata .kiri .kotak-saudara-edit td {
+    padding: 8px 15px;
+    vertical-align: top;
+  }
+  
+  .biodata .kiri .kotak-saudara-edit td:first-child {
+    width: 35%;
+    font-weight: bold;
+  }
+/* end saudara */
+/* end kiri */
+
+
+
+/* saudara */
+.biodata .kanan .kotak-saudara {
+    background-color: #fff;
+    border: 1px solid #c7c6c6;
+    margin: auto;
+    border-radius: 5px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+  }
+
+  
+  .biodata .kanan .kotak-saudara h2 {
+    font-size: 18px;
+    background-color: #e6e9f8;
+    padding: 10px;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .biodata .kanan .kotak-saudara table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px;
+  }
+  
+  .biodata .kanan .kotak-saudara td {
+    padding: 8px 15px;
+    vertical-align: top;
+  }
+  
+  .biodata .kanan .kotak-saudara td:first-child {
+    width: 35%;
+    font-weight: bold;
+  }
+/* end saudara */
+
+/* ayah */
+.biodata .kanan .kotak-ayah {
+    background-color: #fff;
+    border: 1px solid #c7c6c6;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+  }
+  
+  .biodata .kanan .kotak-ayah h2 {
+    font-size: 18px;
+    background-color: #e6e9f8;
+    padding: 10px;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .biodata .kanan .kotak-ayah table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px;
+  }
+  
+  .biodata .kanan .kotak-ayah td {
+    padding: 8px 15px;
+    vertical-align: top;
+  }
+  
+  .biodata .kanan .kotak-ayah td:first-child {
+    width: 35%;
+    font-weight: bold;
+  }
+/* end ayah */
+
+/* ibu */
+.biodata .kanan .kotak-ibu {
+    background-color: #fff;
+    border: 1px solid #c7c6c6;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+  }
+  
+  .biodata .kanan .kotak-ibu h2 {
+    font-size: 18px;
+    background-color: #e6e9f8;
+    padding: 10px;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .biodata .kanan .kotak-ibu table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px;
+  }
+  
+  .biodata .kanan .kotak-ibu td {
+    padding: 8px 15px;
+    vertical-align: top;
+  }
+  
+  .biodata .kanan .kotak-ibu td:first-child {
+    width: 35%;
+    font-weight: bold;
+  }
+/* end ibu */
+
+/* wali */
+.biodata .kanan .kotak-wali {
+    background-color: #fff;
+    border: 1px solid #c7c6c6;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+  }
+  
+  .biodata .kanan .kotak-wali h2 {
+    font-size: 18px;
+    background-color: #e6e9f8;
+    padding: 10px;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .biodata .kanan .kotak-wali table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px;
+  }
+  
+  .biodata .kanan .kotak-wali td {
+    padding: 8px 15px;
+    vertical-align: top;
+  }
+  
+  .biodata .kanan .kotak-wali td:first-child {
+    width: 35%;
+    font-weight: bold;
+  }
+/* end wali */
+
+/* skripsi */
+.biodata .kanan .kotak-skripsi {
+    background-color: #fff;
+    border: 1px solid #c7c6c6;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    box-shadow: 1px 1px 5px rgb(170, 170, 170);
+  }
+  
+  .biodata .kanan .kotak-skripsi h2 {
+    font-size: 18px;
+    background-color: #e6e9f8;
+    padding: 10px;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .biodata .kanan .kotak-skripsi table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 15px;
+  }
+  
+  .biodata .kanan .kotak-skripsi td {
+    padding: 8px 15px;
+    vertical-align: top;
+  }
+  
+  .biodata .kanan .kotak-skripsi td:first-child {
+    width: 35%;
+    font-weight: bold;
+  }
+/* end skripsi */
+
+.footer-bio {
+  padding: 10px 10px 50px;
+  margin-bottom: 50px;
+}
+
+/* Untuk layar maksimal 768px (tablet dan HP) */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Untuk layar maksimal 480px (HP kecil) */
+@media screen and (max-width: 480px) {
+  .biodata{
+    /* border: 1px solid black; */
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    width: 105%;
+    margin: auto;
+    margin-left: -9px;
+    padding: 0px;
+}
+.header-bio {
+  width: 105%;
+  margin: auto;
+  margin-left: -9px;
+}
+
+.biodata .kiri .kotak-foto .tombol .btn {
+  font-size: 14px;
+  width: 90px;
+  height: 46px;
+  line-height: 14px;
+}
+.biodata .kiri,.kanan table tr td{
+  font-size: 15px;
+}
+#email{
+  overflow-x:auto; 
+  white-space:nowrap;
+}
+.header-bio {
+  text-align: center;
+}
+}

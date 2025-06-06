@@ -1,0 +1,46 @@
+.kotak-staf{
+    margin-top: -20px;
+}
+.kotak-staf tr th,td{
+    font-size: 14px;
+}
+.kotak-staf button{
+    font-size: 14px;
+    padding: 2px 5px;
+    background-color: #007BFF;
+}
+.kotak-staf button:hover{
+    background-color: #488fda;
+
+}
+.kotak-staf .kotak-chart-staff{
+    /* border: 1px solid black; */
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+.kotak-staf .kotak-chart-staff .kotak-chart1 {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    max-width: 700px;
+    max-height: 320px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin: 5px 0px 10px 0px;
+}
+
+.kotak-staf .kotak-chart-staff .kotak-chart2 {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 400px;
+    max-height: 320px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin: 5px 0px 10px 0px;
+}

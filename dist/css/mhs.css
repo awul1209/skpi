@@ -1,0 +1,65 @@
+.kotak-mahasiswa{
+    border: 1px solid rgb(212, 212, 212);
+    height: auto;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.kotak-mahasiswa .header-mhs{
+    /* border: 1px solid black; */
+    padding: 12px 0;
+    /* border-top-left-radius: 15px;
+    border-top-right-radius: 15px; */
+    background-color: rgb(255, 255, 255);
+    border-bottom:1px solid  rgb(212, 212, 212);
+}
+.kotak-mahasiswa .header-mhs strong{
+    font-weight: 500;
+    font-size: 28px;
+}
+.kotak-mahasiswa .header-mhs b{
+    font-weight: 500;
+    font-size: 24px;
+}
+.kotak-mahasiswa .body-mhs{
+    /* border: 1px solid black; */
+    padding: 15px 30px;
+}
+.kotak-mahasiswa .body-mhs h4{
+    font-weight: 500;
+font-size: 22px;
+text-align: justify;
+}
+.kotak-mahasiswa .body-mhs p{
+    line-height: 22px;
+text-align: justify;
+}
+@media (max-width: 480px) {
+    .kotak-mahasiswa{
+        margin-bottom: 50px;
+    }
+    .kotak-mahasiswa .header-mhs{
+        /* border: 1px solid black; */
+        padding: 10px 0;
+        /* border-top-left-radius: 15px;
+        border-top-right-radius: 15px; */
+        background-color: rgb(255, 255, 255);
+        border-bottom:1px solid  rgb(212, 212, 212);
+    }
+    .kotak-mahasiswa .header-mhs strong{
+        font-weight: 600;
+        font-size: 20px;
+    }
+    .kotak-mahasiswa .header-mhs b{
+        font-weight: 600;
+        font-size: 18px;
+    }
+    .kotak-mahasiswa .body-mhs h4{
+        font-weight: 500;
+    font-size: 18px;
+    text-align: start;
+    }
+    .kotak-mahasiswa .body-mhs p{
+        line-height: 20px;
+    text-align: justify;
+    }
+    }

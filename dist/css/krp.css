@@ -1,0 +1,210 @@
+.kotak-krp{
+    padding: 0px 7px 10px 7px;
+}
+.kotak-krp h2{
+    font-family: 'Roboto', 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: 600; /* medium */
+    color: #333333; /* warna teks gelap */
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgb(211, 210, 210);
+    padding-bottom: 13px; 
+    text-transform: uppercase;
+}
+.kotak-krp .krp-alert {
+    margin-top: 15px;
+    background-color: #ffcd34; /* warna kuning seperti gambar */
+    color: #222222; /* warna teks gelap */
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-family: 'Arial', 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .kotak-krp table tr{
+    /* border: 1px solid rgb(219, 219, 219); */
+    width: 80%;
+  }
+
+  /* review krp */
+  .kotak-reviewkrp{
+    padding: 0px 7px 10px 7px;
+  }
+  .kotak-reviewkrp   .table-header {
+    background-color: #042366;
+    padding: 7px 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #dcdcdc;
+  }
+  .kotak-reviewkrp .table-reviewkrp{
+    /* border: 1px solid black; */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Arial', 'Roboto', sans-serif;
+    width: 100%;
+    margin: 0 auto;
+  }
+  /* end review krp */
+
+
+  /* kategori wajib */
+  .kategori-wajib{
+    margin-top: 15px;
+  }
+  .kategori-wajib .table-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Arial', 'Roboto', sans-serif;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .kategori-wajib .table-header {
+    background-color: #042366;
+    /* background-color: #e6ebff; */
+    padding: 7px 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #dcdcdc;
+  }
+  
+  .activity-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .activity-table thead {
+    background-color: #fff;
+    font-weight: bold;
+  }
+  
+  .activity-table th,
+  .activity-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+  }
+  
+  .activity-table th:last-child,
+  .activity-table td:last-child {
+    text-align: center;
+  }
+  
+  /* end kategori wajib */
+  
+
+  /* organisasi */
+  .kotak-organisasi{
+    margin-top: 25px;
+  }
+  .kotak-organisasi .table-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Arial', 'Roboto', sans-serif;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .kotak-organisasi .table-header {
+    background-color: #042366;
+    /* background-color: #e6ebff; */
+    padding: 7px 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #dcdcdc;
+  }
+  
+  /* end organisasi */
+
+    /* penalaran */
+    .kotak-penalaran{
+      margin-top: 25px;
+    }
+    .kotak-penalaran .table-container {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'Arial', 'Roboto', sans-serif;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    .kotak-penalaran .table-header {
+      background-color: #042366;
+      /* background-color: #e6ebff; */
+      padding: 7px 16px;
+      font-weight: bold;
+      border-bottom: 1px solid #dcdcdc;
+    }
+    
+    /* end penalaran */
+
+    /* minat */
+    .kotak-minat{
+      margin-top: 25px;
+    }
+    .kotak-minat .table-container {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'Arial', 'Roboto', sans-serif;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    .kotak-minat .table-header {
+      background-color: #042366;
+      /* background-color: #e6ebff; */
+      padding: 7px 16px;
+      font-weight: bold;
+      border-bottom: 1px solid #dcdcdc;
+    }
+    
+    /* end minat */
+
+    /* sosial */
+    .kotak-sosial{
+      margin-top: 25px;
+    }
+    .kotak-sosial .table-container {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'Arial', 'Roboto', sans-serif;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    .kotak-sosial .table-header {
+      background-color: #042366;
+      /* background-color: #e6ebff; */
+      padding: 7px 16px;
+      font-weight: bold;
+      border-bottom: 1px solid #dcdcdc;
+    }
+    
+    /* end sosial */
+
+
+    /* Untuk layar maksimal 480px (HP kecil) */
+@media screen and (max-width: 480px) {
+  .kotak-krp{
+    width: 105%;
+    margin: auto;
+    margin-left: -9px;
+}
+.kotak-krp h2 {
+  margin-bottom: 0px;
+  font-size: 14px;
+  font-weight: 600;
+margin-top: 0px;
+}
+.kotak-krp .table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+}

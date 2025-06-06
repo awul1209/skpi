@@ -1,0 +1,84 @@
+
+  
+  .kotak-pw {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin: 0 auto;
+  }
+  
+  .kotak-pw h3 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .kotak-pw .form-group {
+    margin-bottom: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .kotak-pw .form-row {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .kotak-pw label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .kotak-pw input[type="text"],
+  input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .kotak-pw input[disabled] {
+    background-color: #e9ecef;
+    font-weight: bold;
+  }
+  
+  .kotak-pw .btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .kotak-pw .btn {
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .kotak-pw .btn-kembali {
+    background-color: #dc3545;
+  }
+  
+  .kotak-pw .btn-simpan {
+    background-color: #007bff;
+  }
+  .kotak-pw .btn-group button{
+    margin: 15px;
+  }
+  
+  @media screen and (max-width: 480px) {
+    .kotak-pw .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .kotak-pw .btn-group button{
+        margin: 5px;
+      }
+  }
+  
