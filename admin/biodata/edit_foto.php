@@ -1,4 +1,4 @@
-<div class="kotak-foto">
+<div class="kotak-foto" style="margin-top: 50px;">
 <h3>Form Ganti Foto</h3>
     <form  enctype="multipart/form-data" method="POST" action="">
       <div class="form-row">

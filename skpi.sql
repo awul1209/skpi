@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 06 Jun 2025 pada 08.58
+-- Waktu pembuatan: 10 Jun 2025 pada 13.16
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -61,17 +61,9 @@ CREATE TABLE `khp` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `file` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL
+  `status` varchar(255) NOT NULL,
+  `keterangan` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `khp`
---
-
-INSERT INTO `khp` (`id`, `kode`, `npm`, `nama_b_indo`, `nama_b_inggris`, `tgl_sertifikat`, `no_sertifikat`, `tahun`, `periode`, `created_at`, `updated_at`, `file`, `status`) VALUES
-(15, 'WU001', '721520055', 'Pelatihan Komputer 2022, Universitas Wiraraja', 'Pelatihan Komputer 2022, Universitas Wiraraja', '2025-05-16', 'asdf', '2024/2025', 'GANJIL', '2025-05-04 07:19:52', '2025-05-04 07:19:52', '68281d9cc5246.jpg', 'diterima'),
-(17, 'OR066', '721520055', 'Workshop Moderasi Beragama &quot;Menelusuri Jalan Moderasi Beragama di Kalangan Mahasiswa Pada Era Digital&quot; 2024', 'Religious Moderation Workshop &quot;Tracing the Way of Religious Moderation among Students in the Digital Era&quot; 2024', '2025-05-01', 'qweuwghd', '2024/2025', 'GENAP', '2025-05-04 12:10:10', '2025-05-04 12:10:10', '6817592225107.png', 'diterima'),
-(21, 'WU001', '7230520014', 'PKKMB Sertifikat', 'Certifacate PKKMB', '2025-06-01', '23453453', '2025/2026', 'GANJIL', '2025-06-05 04:56:29', '2025-06-05 04:56:29', '6841237dac486.jpg', 'diterima');
 
 -- --------------------------------------------------------
 
@@ -384,20 +376,13 @@ INSERT INTO `krp` (`id`, `kode`, `nama`, `bobot`, `kategori`) VALUES
 CREATE TABLE `krp_mhs` (
   `id` int(11) NOT NULL,
   `kode` varchar(255) NOT NULL,
-  `npm` int(11) NOT NULL,
+  `npm` varchar(255) NOT NULL,
   `tahun` varchar(255) NOT NULL,
   `periode` varchar(50) NOT NULL,
   `bobot` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `krp_mhs`
---
-
-INSERT INTO `krp_mhs` (`id`, `kode`, `npm`, `tahun`, `periode`, `bobot`, `created_at`, `updated_at`) VALUES
-(12, 'WU002', 721520055, '2025/2026', 'GENAP', 10, '2025-06-05 06:15:18', '2025-06-05 06:15:18');
 
 -- --------------------------------------------------------
 
@@ -438,7 +423,6 @@ CREATE TABLE `mahasiswa` (
 
 INSERT INTO `mahasiswa` (`id_mhs`, `npm`, `nama_lengkap`, `alamat`, `no_tlp`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `agama`, `biaya`, `email`, `skripsi`, `foto`, `tinggal_bersama`, `role_id`, `prodi_id`, `berat_badan`, `tinggi_badan`, `golongan_darah`, `penyakit_diderita`, `saudara_kandung`, `saudara_tiri`, `saudara_angkat`, `password`) VALUES
 (1, '721520055', 'PUTRI WULANDARI AISYAH', 'Sumenep Paberasan jawa timur dusun salosa, kecamatan kota, kabupaten sumenep provinsi jawa timur', '087754772100', 'Perempuan', 'Sumenep', '2002-12-08', 'Islam', 'Orang Tua', 'putriwulandariaisyah32@gmail.com', 'Aplikasi Website E-Prestasi Unija', '682928ae9a33f.png', 'Orang Tua', 2, 1, 38, 153, 'A', 'Asma, Amandel, Mag, Darah rendah', 3, 0, 0, '$2y$10$IAOcFxySdjJjSGAMnYb4suhCSgym2u.HGbNBH7ZEnWPNz3wwsA65.'),
-(2, '7230520012', 'Muhammad Ayyub', 'Jalan Raya Lenteng Dusun ABC. Desa BCD Kec. Saronggi Kab. Sumenep', '3948389533', 'Laki-Laki', 'Sumenep', '2025-05-18', 'Islam', '-', 'muhammad@gmail.com', '-', '6829b7a3df98e.png', NULL, NULL, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$1E5qV2OVav0Hi2VjVO4eSO4TpuvluUbEfIx3/7bQnBZdLcvjpp6PW'),
 (5, '7230520013', 'Aisyah', 'Jalan Raya Manding Dusun Salosa Manding Daya', '3435', 'Perempuan', 'Sumenep', NULL, NULL, NULL, NULL, '', '', NULL, NULL, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$Y5m3M8MX3eQAAeriY7Ju4OaxffwZ8DgtmlPlvtxx.c0rU7sc28Zze'),
 (6, '7230520014', 'Suprayitno', 'Jalan Raya Jalan', '2335', 'Laki Laki', NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$4i/H3s5Wg/wqMRY2BWOHBORcE9JwluyS3tJIOE3O22TRcDkQnJ9sG');
 
@@ -697,7 +681,7 @@ ALTER TABLE `fakultas`
 -- AUTO_INCREMENT untuk tabel `khp`
 --
 ALTER TABLE `khp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT untuk tabel `krp`
@@ -709,7 +693,7 @@ ALTER TABLE `krp`
 -- AUTO_INCREMENT untuk tabel `krp_mhs`
 --
 ALTER TABLE `krp_mhs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT untuk tabel `mahasiswa`

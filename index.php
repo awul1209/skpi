@@ -4,7 +4,7 @@ session_start();
 include 'vendor/autoload.php';
 //KONEKSI DB
 include 'inc/koneksi.php';
-// error_reporting(0);
+error_reporting(0);
 if (isset($_SESSION['login']) == '' && isset($_SESSION['s_iduser']) == '') {
     header('location: login.php');
 } else {
@@ -107,11 +107,10 @@ function hari_ini()
 
 		<!-- mycss assets -->
 	  <!-- Template Main CSS File -->
-	  <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
 	  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
 	  <!-- mycss -->
-	   <link rel="stylesheet" href="dist/css/style.css">
+
 
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">

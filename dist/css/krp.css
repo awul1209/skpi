@@ -1,6 +1,12 @@
 .kotak-krp{
     padding: 0px 7px 10px 7px;
+    margin-top: 50px;
 }
+ .row-disabled {
+        background-color: #f8f9fa; /* Warna abu-abu muda */
+        color: #adb5bd; /* Teks abu-abu */
+        cursor: not-allowed; /* Kursor tanda tidak diizinkan */
+    }
 .kotak-krp h2{
     font-family: 'Roboto', 'Arial', sans-serif;
     font-size: 16px;
@@ -30,6 +36,7 @@
 
   /* review krp */
   .kotak-reviewkrp{
+    margin-top: 50px;
     padding: 0px 7px 10px 7px;
   }
   .kotak-reviewkrp   .table-header {

@@ -6,7 +6,7 @@ $data_mhs=mysqli_fetch_assoc($query_mhs);
         <h3>Form Edit Biodata Mahasiswa</h3>
     </div>
     <form action="" method="post">
-<div class="biodata">
+<div class="biodata" style="margin-top: 0px;">
     <div class="kiri">
 
         <!-- identitas -->

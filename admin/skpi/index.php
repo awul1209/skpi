@@ -16,7 +16,7 @@ $row_prodi=mysqli_fetch_assoc($nama_prodi);
 
 
 <!-- Tabel Data Siswa dengan DataTables -->
-<div class="card">
+<div class="card" style="margin-top: 50px;">
   <div class="card-header text-white" style="background-color: #060930;">
     <h3 class="card-title"><i class="fa fa-table"></i> Data SKPI Prodi <?= $row_prodi['nama_prodi']; ?></h3>
   </div>
@@ -74,6 +74,7 @@ $row_prodi=mysqli_fetch_assoc($nama_prodi);
                             <td class="text-center"><?= $row['bobot'] ?></td>
                             <!-- <td class="text-center"><button class="btn text-white">Setujui</button></td> -->
                         </tr>
+                        
                       <!-- modal view -->
                       <div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-md">

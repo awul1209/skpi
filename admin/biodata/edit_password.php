@@ -1,4 +1,4 @@
-<div class="kotak-pw">
+<div class="kotak-pw" style="margin-top: 50px;">
     <h3>Form Ganti Password</h3>
     <form action="" method="POST">
       <div class="form-group">

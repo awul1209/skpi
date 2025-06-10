@@ -1,7 +1,7 @@
 <!-- Bootstrap CSS (pastikan ini ada di <head>) -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="row kotak-staf">
+<div class="row kotak-staf" style="margin-top: 50px;">
 
 <div class="kotak-chart-staff">
     <div class="kotak-chart1">
@@ -61,17 +61,23 @@
                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
                                    <i class="bi bi-eye fs-5 text-decoration-none"></i>
                                 </a>
-
-                              <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" title="Download" download>
-                                <i class="bi bi-cloud-download fs-5 text-decoration-none"></i></a>
-                            </td>
-                                 <form action="" method="post">
-                              <input type="hidden" name="id_khp" value="<?= $row['id_khp'] ?>">
-                            <td class="text-center"><?= $row['bobot'] ?></td>
-
-                            <td class="text-center"><button type="submit" name="setuju" class="btn text-white">Setujui</button></td>
-                          </form>
+                                
+                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" title="Download" download>
+                                  <i class="bi bi-cloud-download fs-5 text-decoration-none"></i></a>
+                                </td>
+                                <form action="" method="post">
+                                  <input type="hidden" name="id_khp" value="<?= $row['id_khp'] ?>">
+                                  <td class="text-center"><?= $row['bobot'] ?></td>
+                                  
+                                  <td class="text-center">
+                                    <button type="submit" name="setuju" class="btn text-white">Setujui</button>
+                                  </form>
+                                   <a href="#" data-bs-toggle="modal" data-bs-target="#modaltolak<?= $row['id_khp'] ?>" title="View" class="btn text-white mt-2 p-1" style="background-color: red;">
+                                   Tolak
+                                </a>
+                          </td>
                           </tr>
+
 <!-- modal view -->
 <div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-md">
@@ -95,6 +101,28 @@
   </div>
 </div>
 <!-- end modal view -->
+<!-- modal tolak -->
+<div class="modal fade" id="modaltolak<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="exampleModalLabel">Kategori Kegiatan <?= $row['kategori'] ?></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+        <input type="hidden" name="id_khp" value="<?= $row['id_khp'] ?>">
+       <textarea name="ket" id="" class="form-control" style="height: 150px;"></textarea>
+          <!-- Tombol -->
+          <div class="modal-footer">
+            <button type="submit" name="tolak" class="mt-2 btn text-white" style="background-color: red;">Tolak</button>
+          </div>
+             </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal tolak -->
                            <?php } ?>
 				</tbody>
 				</tfoot>
@@ -312,6 +340,38 @@ if (isset($_POST['setuju'])) {
         echo "<script>
         Swal.fire({
             title: 'Gagal diterima',
+            text: '',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.value) {
+                document.location.href='?page=home_staff';
+            }
+        })</script>";
+    }
+}
+
+if (isset($_POST['tolak'])) {
+    $id_khp = $_POST['id_khp'];
+    $ket = $_POST['ket'];
+    $update = mysqli_query($koneksi, "UPDATE khp SET status='ditolak',keterangan='$ket' WHERE id='$id_khp'");
+
+    if ($update) {
+        echo "<script>
+        Swal.fire({
+            title: 'Tolak',
+            text: '',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.value) {
+                document.location.href='?page=home_staff';
+            }
+        })</script>";
+    } else {
+        echo "<script>
+        Swal.fire({
+            title: 'Gagal di Tolak',
             text: '',
             icon: 'error',
             confirmButtonText: 'OK'

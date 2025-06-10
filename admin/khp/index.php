@@ -627,17 +627,40 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
           </div>
 
           <!-- File -->
-          <div class="mb-3">
-            <label class="form-label">File</label>
-            <input type="file" class="form-control" name="file">
-            <?php if (!empty($row['file'])): ?>
-              <small class="form-text text-muted">
-                File saat ini: <?= htmlspecialchars($row['file']) ?></a>
-              </small>
-            <?php else: ?>
-              <small class="form-text text-muted">Tidak ada file saat ini</small>
-            <?php endif; ?>
-          </div>
+         <div class="mb-3">
+    <label class="form-label">Ganti File (Opsional)</label>
+    
+    <input type="file" 
+           class="form-control" 
+           name="file" 
+           id="fileInput<?= $row['id_khp'] ?>" 
+           onchange="previewFile(event, 'filePreview<?= $row['id_khp'] ?>', 'currentFileText<?= $row['id_khp'] ?>')">
+    
+    <small class="form-text text-muted" id="currentFileText<?= $row['id_khp'] ?>">
+        <?php if (!empty($row['file'])): ?>
+            File saat ini: <?= htmlspecialchars($row['file']) ?>
+        <?php else: ?>
+            Tidak ada file yang diunggah.
+        <?php endif; ?>
+    </small>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Preview File</label>
+    
+    <iframe id="filePreview<?= $row['id_khp'] ?>" 
+            src="<?php echo !empty($row['file']) ? '././dist/img/file_skpi_mhs/' . rawurlencode($row['file']) : '' ?>" 
+            width="100%" 
+            height="300px" 
+            style="border: 1px solid #ccc; <?php echo empty($row['file']) ? 'display: none;' : '' ?>">
+    </iframe>
+    
+    <?php if (empty($row['file'])): ?>
+        <div id="noFileMessage<?= $row['id_khp'] ?>" class="text-center p-3" style="border: 1px dashed #ccc;">
+            Tidak ada preview file.
+        </div>
+    <?php endif; ?>
+</div>
 
           <!-- Tombol -->
           <div class="modal-footer">
@@ -690,7 +713,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                 <th>Judul (Eng)</th>
                 <th>file</th>
                 <th>Skor</th>
-                <th>Verivikasi</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -698,11 +721,11 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
             <?php 
                     $no = 1;
                     $total_bobot = 0;
-                    $query=mysqli_query($koneksi,"SELECT khp.id AS id_khp,khp.tahun,khp.periode, krp.kategori, krp.bobot, khp.*, mahasiswa.*
+                    $query=mysqli_query($koneksi,"SELECT khp.id AS id_khp,khp.tahun,khp.periode,khp.keterangan, krp.kategori, krp.bobot, khp.*, mahasiswa.*
                     FROM khp
                     JOIN mahasiswa ON khp.npm = mahasiswa.npm
                     JOIN krp on khp.kode=krp.kode
-                   WHERE khp.npm = '$data_id' AND (khp.status = 'menunggu' OR khp.status = 'diterima')");
+                   WHERE khp.npm = '$data_id' AND (khp.status = 'menunggu' OR khp.status = 'diterima'OR khp.status = 'ditolak')");
                     while($row = mysqli_fetch_assoc($query)) { 
                         $total_bobot += $row['bobot'];
                         ?>
@@ -726,28 +749,35 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <td>
                               <?php if($row['status']=='menunggu'){ ?>
                               <span class="badge bg-warning text-white"><?= $row['status'] ?></span>
-                              <?php }elseif($row['status']=='diterima'){ ?>
+                              <?php }
+                              elseif($row['status']=='diterima'){ ?>
                                 <span class="badge bg-success text-white"><?= $row['status'] ?></span>
-                                <?php } ?>
+                                <?php } 
+                            elseif($row['status']=='ditolak'){ ?>
+                                <span class="badge bg-danger text-white"><?= $row['status'] ?></span>
+                                <?php } 
+                                ?>
                             </td>
                             <td>
-                               <?php if($row['status']=='menunggu'){ ?>
+                               <?php if($row['status']=='menunggu' || $row['status']=='ditolak'){ ?>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalUpdate<?= $row['id_khp'] ?>" title="Update" class="btn text-primary btn-sm">
                                     <i class="fa fa-edit fa-lg"></i>
                                 </a>
-                                       <?php }elseif($row['status']=='diterima'){ ?>
+                                       <?php }
+                                       elseif($row['status']=='diterima'){ ?>
                                         -
-                                         <?php } ?>
+                                         <?php } 
+                                         ?>
                             </td>
                         </tr>
 
                         <!-- modal view -->
-                          <!-- Modal Update -->
 <div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kategori) ?></h1>
+        <?php $kate=$row['kategori']; ?>
+        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
       <div class="modal-body">
@@ -764,24 +794,28 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
     </div>
   </div>
 </div>
-
-<!-- end update modal -->
-                        <!-- end modal view -->
+<!-- end modal view -->
 
 
-                         <!-- Modal Update -->
+                         <!-- Modal Update histori -->
 <div class="modal fade" id="modalUpdate<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">Update Kegiatan - <?= htmlspecialchars($kategori) ?></h1>
+        <h1 class="modal-title" id="exampleModalLabel">Update Kegiatan - <?= htmlspecialchars($row['kategori']) ?></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
       <div class="modal-body">
         <form action="" method="post" enctype="multipart/form-data">
             <input type="hidden" name="gambarLama" value="<?= $row['file'] ?>">
           <input type="hidden" name="id_khp" value="<?= htmlspecialchars($row['id_khp']) ?>">
-
+            
+          <?php if($row['status']=='ditolak'){ ?>
+          <div class="mb-3">
+            <label class="form-label text-red" style="width:100%; margin:auto; text-align: center; font-weight: bold; font-size: 18px;">Keterangan penolakan</label>
+            <textarea class="form-control" name="nama_b_indo" readonly><?= htmlspecialchars($row['keterangan']) ?></textarea>
+          </div>
+          <?php } ?>
           <!-- Nama Kegiatan Indonesia -->
           <div class="mb-3">
             <label class="form-label">Nama Kegiatan ( B.Indonesia)</label>
@@ -799,6 +833,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
             <label class="form-label">Pilih Kegiatan</label>
             <select class="form-select" name="kegiatan" required>
               <?php
+              $kategorii=$row['kategori'];
                 $kode_terpilih = $row['kode'];
                 $query_kode = mysqli_query($koneksi, "SELECT kategori, nama FROM krp WHERE kode = '$kode_terpilih'");
                 $data_kode = mysqli_fetch_assoc($query_kode);
@@ -807,8 +842,8 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                 <?= $data_kode['nama'] . ' - (' . $data_kode['kategori'] . ')' ?>
               </option>
               <?php
-              if ($kategori) {
-                $query_kategori = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori = '$kategori'");
+              if ($kategorii) {
+                $query_kategori = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori = '$kategorii'");
                 while ($opt = mysqli_fetch_assoc($query_kategori)) {
                   echo '<option value="' . htmlspecialchars($opt['kode']) . '">' . htmlspecialchars($opt['nama']) . '</option>';
                 }
@@ -830,18 +865,41 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
             <input type="text" class="form-control" name="no" placeholder="No Sertifikat/SK/Lainnya" value="<?= htmlspecialchars($row['no_sertifikat']) ?>">
           </div>
 
-          <!-- File -->
-          <div class="mb-3">
-            <label class="form-label">File</label>
-            <input type="file" class="form-control" name="file">
-            <?php if (!empty($row['file'])): ?>
-              <small class="form-text text-muted">
-                File saat ini: <?= htmlspecialchars($row['file']) ?></a>
-              </small>
-            <?php else: ?>
-              <small class="form-text text-muted">Tidak ada file saat ini</small>
-            <?php endif; ?>
-          </div>
+           <!-- File -->
+         <div class="mb-3">
+    <label class="form-label">Ganti File (Opsional)</label>
+    
+    <input type="file" 
+           class="form-control" 
+           name="file" 
+           id="fileInput<?= $row['id_khp'] ?>" 
+           onchange="previewFile(event, 'filePreview<?= $row['id_khp'] ?>', 'currentFileText<?= $row['id_khp'] ?>')">
+    
+    <small class="form-text text-muted" id="currentFileText<?= $row['id_khp'] ?>">
+        <?php if (!empty($row['file'])): ?>
+            File saat ini: <?= htmlspecialchars($row['file']) ?>
+        <?php else: ?>
+            Tidak ada file yang diunggah.
+        <?php endif; ?>
+    </small>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Preview File</label>
+    
+    <iframe id="filePreview<?= $row['id_khp'] ?>" 
+            src="<?php echo !empty($row['file']) ? '././dist/img/file_skpi_mhs/' . rawurlencode($row['file']) : '' ?>" 
+            width="100%" 
+            height="300px" 
+            style="border: 1px solid #ccc; <?php echo empty($row['file']) ? 'display: none;' : '' ?>">
+    </iframe>
+    
+    <?php if (empty($row['file'])): ?>
+        <div id="noFileMessage<?= $row['id_khp'] ?>" class="text-center p-3" style="border: 1px dashed #ccc;">
+            Tidak ada preview file.
+        </div>
+    <?php endif; ?>
+</div>
 
           <!-- Tombol -->
           <div class="modal-footer">
@@ -933,8 +991,9 @@ $(document).ready(function() {
                         <select class="form-select" name="kegiatan" id="kegiatan" required>
                             <option value="" selected disabled>-- Pilih --</option>
                             <?php
-                            if ($kategori) {
+                           if ($kategori) {
                                 if ($kategori == 'Wajib Universitas') {
+                                    // Logika untuk 'Wajib Universitas' (tetap sama)
                                     $cek_kode = mysqli_query($koneksi, "SELECT kode FROM khp WHERE npm='$data_id' AND kode IN ('WU001', 'WU002')");
                                     $kode_terpilih = [];
                                     while ($row = mysqli_fetch_assoc($cek_kode)) {
@@ -946,11 +1005,112 @@ $(document).ready(function() {
                                             echo '<option value="' . $row['kode'] . '">' . $row['nama'] . '</option>';
                                         }
                                     }
-                                } else {
-                                    $query_kategori = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori='$kategori'");
-                                    while ($row = mysqli_fetch_assoc($query_kategori)) {
-                                        echo '<option value="' . $row['kode'] . '">' . $row['nama'] . '</option>';
+
+                                } 
+                                elseif ($kategori == 'Organisasi dan Kepemimpinan') {
+                                    // --- AWAL BLOK BARU UNTUK 'ORGANISASI DAN KEPEMIMPINAN' ---
+
+                                    // 1. Ambil semua 'kode' dari kategori ini yang sudah ada di tabel khp
+                                    //    untuk user, tahun ajaran, dan periode saat ini.
+                                    $query_cek_org = mysqli_query($koneksi, "SELECT kode FROM khp WHERE npm='$data_id' AND tahun='$tahunAjaran' AND periode='$periode'");
+
+                                    // 2. Simpan kode-kode yang sudah dipilih tersebut dalam sebuah array.
+                                    $kode_terpilih_org = [];
+                                    while ($row_cek = mysqli_fetch_assoc($query_cek_org)) {
+                                        $kode_terpilih_org[] = $row_cek['kode'];
                                     }
+
+                                    // 3. Ambil semua kegiatan yang mungkin untuk kategori ini dari tabel krp.
+                                    $query_kategori_org = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori='Organisasi dan Kepemimpinan'");
+
+                                    // 4. Loop melalui semua kegiatan yang mungkin.
+                                    while ($row_org = mysqli_fetch_assoc($query_kategori_org)) {
+                                        // 5. Tampilkan HANYA JIKA kodenya BELUM ADA di dalam array kode yang sudah dipilih.
+                                        if (!in_array($row_org['kode'], $kode_terpilih_org)) {
+                                            echo '<option value="' . $row_org['kode'] . '">' . $row_org['nama'] . '</option>';
+                                        }
+                                    }
+                                    // --- AKHIR BLOK BARU ---
+                                    
+                                }
+                                elseif ($kategori == 'Penalaran dan Keilmuan') {
+                                    // --- AWAL BLOK BARU UNTUK 'Penalaran dan Keilmuan' ---
+
+                                    // 1. Ambil semua 'kode' dari kategori ini yang sudah ada di tabel khp
+                                    //    untuk user, tahun ajaran, dan periode saat ini.
+                                    $query_cek_org = mysqli_query($koneksi, "SELECT kode FROM khp WHERE npm='$data_id' AND tahun='$tahunAjaran' AND periode='$periode'");
+
+                                    // 2. Simpan kode-kode yang sudah dipilih tersebut dalam sebuah array.
+                                    $kode_terpilih_org = [];
+                                    while ($row_cek = mysqli_fetch_assoc($query_cek_org)) {
+                                        $kode_terpilih_org[] = $row_cek['kode'];
+                                    }
+
+                                    // 3. Ambil semua kegiatan yang mungkin untuk kategori ini dari tabel krp.
+                                    $query_kategori_org = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori='Penalaran dan Keilmuan'");
+
+                                    // 4. Loop melalui semua kegiatan yang mungkin.
+                                    while ($row_org = mysqli_fetch_assoc($query_kategori_org)) {
+                                        // 5. Tampilkan HANYA JIKA kodenya BELUM ADA di dalam array kode yang sudah dipilih.
+                                        if (!in_array($row_org['kode'], $kode_terpilih_org)) {
+                                            echo '<option value="' . $row_org['kode'] . '">' . $row_org['nama'] . '</option>';
+                                        }
+                                    }
+                                    // --- AKHIR BLOK BARU ---
+                                    
+                                }
+
+                                 elseif ($kategori == 'Minat dan Bakat') {
+                                    // --- AWAL BLOK BARU UNTUK 'Minat dan Bakat' ---
+
+                                    // 1. Ambil semua 'kode' dari kategori ini yang sudah ada di tabel khp
+                                    //    untuk user, tahun ajaran, dan periode saat ini.
+                                    $query_cek_org = mysqli_query($koneksi, "SELECT kode FROM khp WHERE npm='$data_id' AND tahun='$tahunAjaran' AND periode='$periode'");
+
+                                    // 2. Simpan kode-kode yang sudah dipilih tersebut dalam sebuah array.
+                                    $kode_terpilih_org = [];
+                                    while ($row_cek = mysqli_fetch_assoc($query_cek_org)) {
+                                        $kode_terpilih_org[] = $row_cek['kode'];
+                                    }
+
+                                    // 3. Ambil semua kegiatan yang mungkin untuk kategori ini dari tabel krp.
+                                    $query_kategori_org = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori='Minat dan Bakat'");
+
+                                    // 4. Loop melalui semua kegiatan yang mungkin.
+                                    while ($row_org = mysqli_fetch_assoc($query_kategori_org)) {
+                                        // 5. Tampilkan HANYA JIKA kodenya BELUM ADA di dalam array kode yang sudah dipilih.
+                                        if (!in_array($row_org['kode'], $kode_terpilih_org)) {
+                                            echo '<option value="' . $row_org['kode'] . '">' . $row_org['nama'] . '</option>';
+                                        }
+                                    }
+                                    // --- AKHIR BLOK BARU ---
+                                    
+                                }
+                                 elseif ($kategori == 'Sosial dan Lainnya') {
+                                    // --- AWAL BLOK BARU UNTUK 'Sosial dan Lainnya' ---
+
+                                    // 1. Ambil semua 'kode' dari kategori ini yang sudah ada di tabel khp
+                                    //    untuk user, tahun ajaran, dan periode saat ini.
+                                    $query_cek_org = mysqli_query($koneksi, "SELECT kode FROM khp WHERE npm='$data_id' AND tahun='$tahunAjaran' AND periode='$periode'");
+
+                                    // 2. Simpan kode-kode yang sudah dipilih tersebut dalam sebuah array.
+                                    $kode_terpilih_org = [];
+                                    while ($row_cek = mysqli_fetch_assoc($query_cek_org)) {
+                                        $kode_terpilih_org[] = $row_cek['kode'];
+                                    }
+
+                                    // 3. Ambil semua kegiatan yang mungkin untuk kategori ini dari tabel krp.
+                                    $query_kategori_org = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori='Sosial dan Lainnya'");
+
+                                    // 4. Loop melalui semua kegiatan yang mungkin.
+                                    while ($row_org = mysqli_fetch_assoc($query_kategori_org)) {
+                                        // 5. Tampilkan HANYA JIKA kodenya BELUM ADA di dalam array kode yang sudah dipilih.
+                                        if (!in_array($row_org['kode'], $kode_terpilih_org)) {
+                                            echo '<option value="' . $row_org['kode'] . '">' . $row_org['nama'] . '</option>';
+                                        }
+                                    }
+                                    // --- AKHIR BLOK BARU ---
+                                    
                                 }
                             }
                             ?>
@@ -967,10 +1127,20 @@ $(document).ready(function() {
                         <input type="text" class="form-control" placeholder="No Sertifikat/SK/Lainnya" name="no">
                     </div>
 
+
                     <div class="mb-3">
-                        <label for="file" class="form-label">File</label>
-                        <input type="file" class="form-control" placeholder="File Sertifikat/SK/Lainnya (png,jpg,jpeg,pdf,word)" name="file">
-                    </div>
+    <label for="fileTambah" class="form-label">File (Sertifikat/SK/Bukti Lainnya)</label>
+    
+    <input type="file" class="form-control" name="file" id="fileTambah" onchange="previewFile(event, 'filePreviewTambah', 'previewTextTambah')" placeholder="File Sertifikat/SK/Lainnya (png,jpg,jpeg,pdf,word)">
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Preview File</label>
+    
+    <iframe id="filePreviewTambah" style="width: 50%; height: 200px; display: none; margin: 10px auto; border: 1px solid #ccc;"></iframe>
+    
+    <p id="previewTextTambah" class="text-center text-muted mt-2"></p>
+</div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -1039,6 +1209,83 @@ $(document).ready(function() {
     });
 </script>
 
+<!-- preview tambah -->
+ <script>
+function previewFile(event, previewFrameId, textElementId) {
+    const input = event.target;
+    const file = input.files[0];
+    const previewFrame = document.getElementById(previewFrameId);
+    const textElement = document.getElementById(textElementId);
+    
+    // Hapus pesan "tidak ada file" jika ada
+    const noFileMessage = document.getElementById('noFileMessage' + previewFrameId.replace('filePreview', ''));
+    if(noFileMessage) noFileMessage.style.display = 'none';
+
+    if (file) {
+        const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+
+        if (allowedExtensions.includes(fileExtension)) {
+            const objectUrl = URL.createObjectURL(file);
+            previewFrame.src = objectUrl;
+            previewFrame.style.display = 'block'; // Tampilkan iframe
+            textElement.innerHTML = `<span class="text-primary">Preview: ${file.name}</span>`;
+        } else {
+            previewFrame.style.display = 'none'; // Sembunyikan iframe
+            textElement.innerHTML = `<span class="text-danger">File dipilih: ${file.name} (Preview tidak didukung)</span>`;
+        }
+    }
+}
+</script>
+
+
+
+
+<!-- preview update -->
+<script>
+function previewFile(event, previewFrameId, textElementId) {
+    const input = event.target;
+    const file = input.files[0];
+    const previewFrame = document.getElementById(previewFrameId);
+    const textElement = document.getElementById(textElementId);
+    
+    // Temukan juga pesan "tidak ada preview" jika ada
+    const noFileMessage = document.getElementById('noFileMessage' + previewFrameId.replace('filePreview', ''));
+
+    if (file) {
+        // Daftar ekstensi file yang bisa di-preview (gambar dan pdf)
+        const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+
+        if (allowedExtensions.includes(fileExtension)) {
+            // Buat URL sementara untuk file yang dipilih
+            const objectUrl = URL.createObjectURL(file);
+            
+            // Tampilkan URL tersebut di iframe
+            previewFrame.src = objectUrl;
+            
+            // Pastikan iframe terlihat
+            previewFrame.style.display = 'block';
+            if(noFileMessage) {
+                noFileMessage.style.display = 'none';
+            }
+            
+            // Ganti teks info file
+            textElement.innerHTML = `<span class="text-primary">Preview file baru: ${file.name}</span>`;
+
+        } else {
+            // Jika tipe file tidak didukung (misal: .docx, .zip)
+            previewFrame.style.display = 'none'; // Sembunyikan iframe
+            if(noFileMessage) {
+                noFileMessage.style.display = 'block';
+                noFileMessage.textContent = 'Preview tidak tersedia untuk tipe file ini.';
+            }
+            textElement.innerHTML = `<span class="text-danger">File dipilih: ${file.name} (Preview tidak didukung)</span>`;
+        }
+    }
+}
+</script>
+
 <?php 
 if(isset($_POST['simpan'])){
 // $bulan = date('n'); // Bulan dalam angka 1–12
@@ -1077,12 +1324,6 @@ if(isset($_POST['simpan'])){
 
 
 if(isset($_POST['update'])){
-// $bulan = date('n'); // Bulan dalam angka 1–12
-// $periode = ($bulan >= 7) ? 'GENAP' : 'GANJIL';
-// $tahunSekarang = date('Y'); // tahun: 2025
-// $tahunDepan = $tahunSekarang + 1;
-
-// $tahunAjaran = "$tahunSekarang/$tahunDepan";
   $id=htmlspecialchars($_POST['id_khp']);
   $gl=htmlspecialchars($_POST['gambarLama']);
   $nama_indo=htmlspecialchars($_POST['nama_b_indo']);
@@ -1099,6 +1340,7 @@ $file = ($_FILES['file']['error'] === 4) ? $gl : upload();
   tgl_sertifikat='$tanggal',
   no_sertifikat='$no',
   kode='$kode',
+  status='menunggu',
   file='$file'
   WHERE id=$id
   ");
