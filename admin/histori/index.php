@@ -74,7 +74,14 @@ if(isset($_POST['tampilkan'])){
         <h2>Data Histori <?= $jenis ?> <?= $tahun ?> <?= $periode ?></h2>
     </div>
     <div class="kotak2">
-        <a href="././cetak/cetak_histori.php" target="_blank" class="btn btn-primary">Cetak</a>
+<?php
+// Pastikan parameter tidak kosong sebelum menampilkan tombol
+if (!empty($jenis) && !empty($tahun) && !empty($periode)) {
+    // Buat URL dengan parameter yang lengkap
+    $url_cetak = "././cetak/cetak_histori.php?npm=$data_id&jenis=$jenis&tahun=$tahun&periode=$periode&fakultas=$nama_fakultas";
+    echo '<a href="' . $url_cetak . '" target="_blank" class="btn btn-primary">Cetak Laporan</a>';
+}
+?>
     </div>
 </div>
 
@@ -85,7 +92,7 @@ if(isset($_POST['tampilkan'])){
             $query = mysqli_query($koneksi, "SELECT krp_mhs.kode,krp.nama,krp.kategori,krp_mhs.npm FROM `krp_mhs` JOIN krp ON krp_mhs.kode=krp.kode
             WHERE kategori = 'Wajib Universitas' and npm='$data_id' and krp_mhs.tahun='$tahun' and krp_mhs.periode='$periode'");
       }else if($jenis=='KHP'){
-            $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Wajib Universitas'and npm='$data_id' and status='menunggu'");
+            $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Wajib Universitas'and npm='$data_id' and status='diterima'");
       }
             if (mysqli_num_rows($query) > 0) {
       ?>
@@ -131,7 +138,7 @@ if(isset($_POST['tampilkan'])){
             $query = mysqli_query($koneksi, "SELECT krp_mhs.kode,krp.nama,krp.kategori,krp_mhs.npm FROM `krp_mhs` JOIN krp ON krp_mhs.kode=krp.kode
         WHERE kategori = 'Organisasi dan Kepemimpinan' and npm='$data_id' and krp_mhs.tahun='$tahun' and krp_mhs.periode='$periode'");
       }else if($jenis=='KHP'){
-            $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Organisasi dan Kepemimpinan'and npm='$data_id' and status='menunggu'");
+            $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Organisasi dan Kepemimpinan'and npm='$data_id' and status='diterima'");
       }
 
         if (mysqli_num_rows($query) > 0) {
@@ -177,7 +184,7 @@ if(isset($_POST['tampilkan'])){
                 $query = mysqli_query($koneksi, "SELECT krp_mhs.kode,krp.nama,krp.kategori,krp_mhs.npm FROM `krp_mhs` JOIN krp ON krp_mhs.kode=krp.kode
         WHERE kategori = 'Penalaran dan Keilmuan' and npm='$data_id' and krp_mhs.tahun='$tahun' and krp_mhs.periode='$periode'");
           }else if($jenis=='KHP'){
-                $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Penalaran dan Keilmuan'and npm='$data_id' and status='menunggu'");
+                $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Penalaran dan Keilmuan'and npm='$data_id' and status='diterima'");
           }
 
         if (mysqli_num_rows($query) > 0) {
@@ -222,7 +229,7 @@ if(isset($_POST['tampilkan'])){
                 $query = mysqli_query($koneksi, "SELECT krp_mhs.kode,krp.nama,krp.kategori,krp_mhs.npm FROM `krp_mhs` JOIN krp ON krp_mhs.kode=krp.kode
                 WHERE kategori = 'Minat dan Bakat' and npm='$data_id' and krp_mhs.tahun='$tahun' and krp_mhs.periode='$periode'");
           }else if($jenis=='KHP'){
-                $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Minat dan Bakat'and npm='$data_id' and status='menunggu'");
+                $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Minat dan Bakat'and npm='$data_id' and status='diterima'");
           }
 
         if (mysqli_num_rows($query) > 0) {
@@ -266,7 +273,7 @@ if(isset($_POST['tampilkan'])){
                 $query = mysqli_query($koneksi, "SELECT krp_mhs.kode,krp.nama,krp.kategori,krp_mhs.npm FROM `krp_mhs` JOIN krp ON krp_mhs.kode=krp.kode
         WHERE kategori = 'Sosial dan Lainnya' and npm='$data_id' and krp_mhs.tahun='$tahun' and krp_mhs.periode='$periode'");
           }else if($jenis=='KHP'){
-                $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Sosial dan Lainnyat'and npm='$data_id' and status='menunggu'");
+                $query = mysqli_query($koneksi, "SELECT khp.kode,khp.npm,krp.nama,khp.tahun,khp.periode,krp.kategori FROM `khp` JOIN krp ON khp.kode=krp.kode WHERE khp.tahun='$tahun' and periode='$periode' and kategori='Sosial dan Lainnyat'and npm='$data_id' and status='diterima'");
           }
 
         if (mysqli_num_rows($query) > 0) {

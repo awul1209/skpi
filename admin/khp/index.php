@@ -94,7 +94,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                         <th>Tanggal</th>
                         <th>Nama Kegiatan (Indonesia)</th>
                         <th>Nama Kegiatan (Inggris)</th>
-                        <th>Bobot</th>
+                        <!-- <th>Bobot</th> -->
                         <th>File</th>
                     </tr>
                 </thead>
@@ -110,24 +110,24 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <td><?= $row['tgl'] ?></td>
                             <td><?= $row['nama_b_indo'] ?></td>
                             <td><?= $row['nama_b_inggris'] ?></td>
-                            <td><?= $row['bobot'] ?></td>
+                            <!-- <td><?= $row['bobot'] ?></td> -->
                             <td>
                                 <?php if($row['file'] == ''){ ?>
                                     <a href="#" download>❌</a>
                                <?php } else{ ?>                             
                                 <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download>
-                                <img src="././dist/img/icon_action/down1.png" width="25" title="Download"> 
+                               <i class="bi bi-cloud-download fs-5"></i>
                                 </a>
                                 <?php } ?>
                             </td>
                         </tr>
                     <?php } ?>
-                    <tr>
+                    <!-- <tr>
                         <td></td>
                         <td colspan="3" class="text-center"><b>Total</b></td>
                         <td><b><?= $total_bobot; ?></b></td>
                         <td></td>
-                        </tr>
+                        </tr> -->
               <?php  } else { ?>
                         <div class="alert alert-warning alert-dismissible fade show mt-1 ms-3 me-3" role="alert">
                         Belum ada data yang ditambahkan pada Kategori <strong>'  Wajib Universitas/Fakultas  '</strong> ... !!!
@@ -158,7 +158,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                         <th>Tanggal</th>
                         <th>Nama Kegiatan (Indonesia)</th>
                         <th>Nama Kegiatan (Inggris)</th>
-                        <th>Bobot</th>
+                        <!-- <th>Bobot</th> -->
                         <th>File</th>
                     </tr>
                 </thead>
@@ -174,22 +174,22 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <td><?= $row['tgl'] ?></td>
                             <td><?= $row['nama_b_indo'] ?></td>
                             <td><?= $row['nama_b_inggris'] ?></td>
-                            <td><?= $row['bobot'] ?></td>
+                            <!-- <td><?= $row['bobot'] ?></td> -->
                             <td>
                                 <?php if($row['file'] == ''){ ?>
                                     <a href="#" class="text-decoration-none">❌</a>
                                <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <img src="././dist/img/icon_action/down1.png" width="25" title="Download"></a>
+                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <i class="bi bi-cloud-download fs-5"></i></a>
                                 <?php } ?>
                             </td>
                         </tr>
                     <?php } ?>
-                    <tr>
+                    <!-- <tr>
                         <td></td>
                         <td colspan="3" class="text-center"><b>Total</b></td>
                         <td><b><?= $total_bobot; ?></b></td>
                         <td></td>
-                        </tr>
+                        </tr> -->
               <?php  } else { ?>
 
                         <div class="alert alert-warning alert-dismissible fade show mt-1 ms-3 me-3" role="alert">
@@ -221,7 +221,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                         <th>Tanggal</th>
                         <th>Nama Kegiatan (Indonesia)</th>
                         <th>Nama Kegiatan (Inggris)</th>
-                        <th>Bobot</th>
+                        <!-- <th>Bobot</th> -->
                         <th>File</th>
                     </tr>
                 </thead>
@@ -237,22 +237,22 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <td><?= $row['tgl'] ?></td>
                             <td><?= $row['nama_b_indo'] ?></td>
                             <td><?= $row['nama_b_inggris'] ?></td>
-                            <td><?= $row['bobot'] ?></td>
+                            <!-- <td><?= $row['bobot'] ?></td> -->
                             <td>
                                 <?php if($row['file'] == ''){ ?>
                                     <a href="#" download>❌</a>
                                <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <img src="././dist/img/icon_action/down1.png" width="25" title="Download"></a>
+                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <i class="bi bi-cloud-download fs-5"></i></a>
                                 <?php } ?>
                             </td>
                         </tr>
                     <?php } ?>
-                    <tr>
+                    <!-- <tr>
                         <td></td>
                         <td colspan="3" class="text-center"><b>Total</b></td>
                         <td><b><?= $total_bobot; ?></b></td>
                         <td></td>
-                        </tr>
+                        </tr> -->
              <?php   } else { ?>
 
                         <div class="alert alert-warning alert-dismissible fade show mt-1 ms-3 me-3" role="alert">
@@ -284,7 +284,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                         <th>Tanggal</th>
                         <th>Nama Kegiatan (Indonesia)</th>
                         <th>Nama Kegiatan (Inggris)</th>
-                        <th>Bobot</th>
+                        <!-- <th>Bobot</th> -->
                         <th>File</th>
                     </tr>
                 </thead>
@@ -292,29 +292,30 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                     <?php 
                     $no = 1;
                     $total_bobot =0;
-                        while($row = mysqli_fetch_assoc($query)) { ?>
-                           $total_bobot += $row['bobot'];
+                        while($row = mysqli_fetch_assoc($query)) { 
+                            $total_bobot += $row['bobot'];
+                            ?>
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td><?= $row['tgl'] ?></td>
                                 <td><?= $row['nama_b_indo'] ?></td>
                                 <td><?= $row['nama_b_inggris'] ?></td>
-                                <td><?= $row['bobot'] ?></td>
+                                <!-- <td><?= $row['bobot'] ?></td> -->
                                 <td>
                                 <?php if($row['file'] == ''){ ?>
                                     <a href="#" download>❌</a>
                                <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <img src="././dist/img/icon_action/down1.png" width="25" title="Download"></a>
+                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <i class="bi bi-cloud-download fs-5"></i></a>
                                 <?php } ?>
                             </td>
                             </tr>
                         <?php } ?>
-                        <tr>
+                        <!-- <tr>
                         <td></td>
                         <td colspan="3" class="text-center"><b>Total</b></td>
                         <td><b><?= $total_bobot; ?></b></td>
                         <td></td>
-                        </tr>
+                        </tr> -->
                   <?php  } else { ?>
 
                             <div class="alert alert-warning alert-dismissible fade show mt-1 ms-3 me-3" role="alert">
@@ -346,7 +347,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                         <th>Tanggal</th>
                         <th>Nama Kegiatan (Indonesia)</th>
                         <th>Nama Kegiatan (Inggris)</th>
-                        <th>Bobot</th>
+                        <!-- <th>Bobot</th> -->
                         <th>File</th>
                     </tr>
                 </thead>
@@ -362,22 +363,22 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                                 <td><?= $row['tgl'] ?></td>
                                 <td><?= $row['nama_b_indo'] ?></td>
                                 <td><?= $row['nama_b_inggris'] ?></td>
-                                <td><?= $row['bobot'] ?></td>
+                                <!-- <td><?= $row['bobot'] ?></td> -->
                                 <td>
                                 <?php if($row['file'] == ''){ ?>
                                     <a href="#" download>❌</a>
                                <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <img src="././dist/img/icon_action/down1.png" width="25" title="Download"></a>
+                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <i class="bi bi-cloud-download fs-5"></i></a>
                                 <?php } ?>
                             </td>
                             </tr>
                         <?php } ?>
-                        <tr>
+                        <!-- <tr>
                         <td></td>
                         <td colspan="3" class="text-center"><b>Total</b></td>
                         <td><b><?= $total_bobot; ?></b></td>
                         <td></td>
-                        </tr>
+                        </tr> -->
                    <?php } else { ?>
 
                             <div class="alert alert-warning alert-dismissible fade show mt-1 ms-3 me-3" role="alert">
@@ -424,11 +425,11 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
     <h3>Data KRP Tahun <?= $tahunAjaran ?>/<?= $periode ?></h3>
     <?php
     $query = mysqli_query($koneksi, "
-      SELECT krp_mhs.kode, krp_mhs.npm, krp_mhs.tahun, krp_mhs.periode,
+      SELECT krp.id as id_krp, krp_mhs.kode, krp_mhs.npm, krp_mhs.tahun, krp_mhs.periode,
              krp_mhs.bobot, krp_mhs.created_at, krp.nama, krp.kategori
       FROM krp_mhs
       INNER JOIN krp ON krp_mhs.kode = krp.kode
-      WHERE tahun = '$tahunAjaran' AND periode = '$periode' AND npm = '$data_id'
+      WHERE tahun = '$tahunAjaran' AND periode = '$periode' AND npm = '$data_id' AND krp_mhs.selesai = ''
     ");
 
     if (mysqli_num_rows($query) > 0) {
@@ -442,7 +443,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                 <th>Tanggal</th>
                 <th>Nama</th>
                 <th>Kategori</th>
-                <th>Bobot</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -453,16 +454,79 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                     <td><?= date('d-m-Y', strtotime($row['created_at'])) ?></td>
                     <td><?= $row['nama'] ?></td>
                     <td><?= $row['kategori'] ?></td>
-                    <td><?= $row['bobot'] ?></td>
+                    <td><a href="" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#modaldarikrp<?= $row['id_krp'] ?>" style="padding: 2px 4px; font-size: 14px;">Lengkapi</a></td>
                 </tr>
+                 <!-- Modal Tambah Kegiatan -->
+<div class="modal fade" id="modaldarikrp<?= $row['id_krp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="exampleModalLabel">Tambah Kegiatan - <?= $row['kategori'] ?></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id_krp" value="<?= $row['id_krp'] ?>">
+                    <input type="hidden" name="kategori" value="<?= htmlspecialchars($kategori) ?>">
+
+                    <div class="mb-3">
+                        <label for="kegiatan" class="form-label">Nama Kegiatan ( B.Indonesia)</label>
+                        <textarea class="form-control" name="nama_b_indo" id="nama_b_indo" placeholder="Tulis Lengkap dengan Tahun dan Tempat Pelaksanaan"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="kegiatan" class="form-label">Nama Kegiatan ( B.Inggris)</label>
+                        <textarea class="form-control" name="nama_b_inggris" id="nama_b_inggris" placeholder="Akan terisi otomatis..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="kegiatan" class="form-label">Kegiatan</label>
+                   <input type="hidden" class="form-control" placeholder="kegiatan" name="kegiatan" value="<?= $row['kode'] ?>">
+                   <input type="text" class="form-control" value="<?= $row['nama'] ?>" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="kegiatan" class="form-label">Tanggal Diterbitkan/Disahkan</label>
+                        <input type="date" class="form-control" placeholder="Tanggal" name="tanggal">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="no" class="form-label">No Sert/SK/HAKI/ISSN/ISBN/Keterangan Lainnya</label>
+                        <input type="text" class="form-control" placeholder="No Sertifikat/SK/Lainnya" name="no">
+                    </div>
+
+
+                    <div class="mb-3">
+    <label for="fileTambah" class="form-label">File (Sertifikat/SK/Bukti Lainnya)</label>
+    
+    <input type="file" class="form-control" name="file" id="fileTambah" onchange="previewFile(event, 'filePreviewTambah', 'previewTextTambah')" placeholder="File Sertifikat/SK/Lainnya (png,jpg,jpeg,pdf,word)">
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Preview File</label>
+    
+    <iframe id="filePreviewTambah" style="width: 50%; height: 200px; display: none; margin: 10px auto; border: 1px solid #ccc;"></iframe>
+    
+    <p id="previewTextTambah" class="text-center text-muted mt-2"></p>
+</div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
             <?php } ?>
         </tbody>
         <tfoot>
-            <tr>
+            <!-- <tr>
                 <td></td>
                 <td colspan="3" class="text-center"><b>Total</b></td>
                 <td><b><?= $total_bobot; ?></b></td>
-            </tr>
+            </tr> -->
         </tfoot>
     </table>
     <hr>
@@ -505,9 +569,9 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
 <?php }else { ?>
         <!-- Tombol tambah hanya muncul jika kategori terpilih -->
         <?php if ($kategori): ?>
-            <button type="button" class="btn btn-primary add-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <!-- <button type="button" class="btn btn-primary add-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Tambah Kegiatan
-            </button>
+            </button> -->
         <?php endif; ?>
 
 <?php if ($kategori != '') {
@@ -532,7 +596,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                         <th>Tanggal</th>
                         <th>Nama Kegiatan (Indonesia)</th>
                         <th>Nama Kegiatan (Inggris)</th>
-                        <th>Bobot</th>
+                        <!-- <th>Bobot</th> -->
                         <th>File</th>
                         <th>Aksi</th>
                     </tr>
@@ -549,11 +613,17 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <td><?= $row['tgl'] ?></td>
                             <td><?= $row['nama_b_indo'] ?></td>
                             <td><?= $row['nama_b_inggris'] ?></td>
-                            <td><?= $row['bobot'] ?></td>
+                            <!-- <td><?= $row['bobot'] ?></td> -->
                             <?php if($row['file'] == ''){ ?>
                                 <td>-</td>
                             <?php }else {?>
-                                <td><a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download><i class="bi bi-cloud-download fs-5"></a></td>
+                                <td>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
+                                <i class="bi bi-eye fs-5"></i>
+                                </a>
+                                <br>
+                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download><i class="bi bi-cloud-download fs-5"></i></a>
+                            </td>
                             <?php } ?>
                             <td>
                                 <a href="#" title="Ubah" class="btn text-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalUpdate<?= $row['id_khp'] ?>">
@@ -564,6 +634,31 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                                 </a>
                             </td>
                         </tr>
+
+                        <!-- modal view -->
+<div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <?php $kate=$row['kategori']; ?>
+        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+       <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="100%" height="600px"></iframe>
+
+
+          <!-- Tombol -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal view -->
 
                        <!-- Modal Update -->
 <div class="modal fade" id="modalUpdate<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -675,13 +770,13 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
 
 <!-- end update modal -->
                     <?php } ?>
-                        <tr>
+                        <!-- <tr>
                         <td></td>
                         <td colspan="3" class="text-center"><b>Total</b></td>
                         <td><b><?= $total_bobot; ?></b></td>
                         <td></td>
                         <td></td>
-                        </tr>
+                        </tr> -->
                 </tbody>
             </table>
         </div>
@@ -721,13 +816,13 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
             <?php 
                     $no = 1;
                     $total_bobot = 0;
-                    $query=mysqli_query($koneksi,"SELECT khp.id AS id_khp,khp.tahun,khp.periode,khp.keterangan, krp.kategori, krp.bobot, khp.*, mahasiswa.*
+                    $query=mysqli_query($koneksi,"SELECT khp.id AS id_khp,khp.tahun,khp.periode,khp.keterangan, krp.kategori,khp.bobot_disetujui, krp.bobot, khp.*, mahasiswa.*
                     FROM khp
                     JOIN mahasiswa ON khp.npm = mahasiswa.npm
                     JOIN krp on khp.kode=krp.kode
                    WHERE khp.npm = '$data_id' AND (khp.status = 'menunggu' OR khp.status = 'diterima'OR khp.status = 'ditolak')");
                     while($row = mysqli_fetch_assoc($query)) { 
-                        $total_bobot += $row['bobot'];
+                        $total_bobot += $row['bobot_disetujui'];
                         ?>
                         <tr>
                             <td><b><?= $no++; ?></b></td>
@@ -745,7 +840,14 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                                 <i class="bi bi-cloud-download fs-5"></i></a>
                             </td>
                             <!-- <td><?= $row['tahun'] ?> | <?= $row['periode'] ?></td> -->
-                            <td><?= $row['bobot'] ?></td>
+
+                            <td>
+                            <?php if($row['status']=='diterima'){ ?>
+                              <?= $row['bobot_disetujui'] ?>
+                              <?php }else{
+                                echo "-";
+                              } ?>
+                            </td>
                             <td>
                               <?php if($row['status']=='menunggu'){ ?>
                               <span class="badge bg-warning text-white"><?= $row['status'] ?></span>
@@ -771,9 +873,9 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             </td>
                         </tr>
 
-                        <!-- modal view -->
+<!-- modal view histori-->
 <div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <?php $kate=$row['kategori']; ?>
@@ -1288,12 +1390,7 @@ function previewFile(event, previewFrameId, textElementId) {
 
 <?php 
 if(isset($_POST['simpan'])){
-// $bulan = date('n'); // Bulan dalam angka 1–12
-// $periode = ($bulan >= 7) ? 'GENAP' : 'GANJIL';
-// $tahunSekarang = date('Y'); // tahun: 2025
-// $tahunDepan = $tahunSekarang + 1;
-
-// $tahunAjaran = "$tahunSekarang/$tahunDepan";
+$id_krp=$_POST['id_krp'];
   $status='';
   $nama_indo=htmlspecialchars($_POST['nama_b_indo']);
   $nama_inggris=htmlspecialchars($_POST['nama_b_inggris']);
@@ -1306,6 +1403,8 @@ if(isset($_POST['simpan'])){
   $simpan=mysqli_query($koneksi,"INSERT INTO khp (kode,npm,nama_b_indo,nama_b_inggris,tgl_sertifikat,no_sertifikat,file,status,tahun,periode) VALUES ('$kode','$data_id','$nama_indo','$nama_inggris','$tanggal','$no','$file','$status','$tahunAjaran','$periode')");
 
   if ($simpan) {
+    mysqli_query($koneksi,"UPDATE krp_mhs SET selesai='y' WHERE id ='$id_krp'");
+    mysqli_query($koneksi,"UPDATE krp_mhs SET selesai='y' WHERE kode ='$kode' AND tahun='$tahunAjaran' AND periode='$periode'");
     echo "<script>
     Swal.fire({title: 'Tambah Data Berhasil',text: '',icon: 'success',confirmButtonText: 'OK'
     }).then((result) => {if (result.value){

@@ -47,6 +47,11 @@ if (isset($_GET['page'])) {
             include 'admin/biodata/edit_foto.php';
             break;
 
+        //hasil khp
+        case 'hasil-khp':
+            include 'admin/hasil_khp/index.php';
+            break;
+
             // staff
         //user
         case 'data_mhs_staff':

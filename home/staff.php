@@ -18,7 +18,6 @@
 			<br>
 			<table id="example1" class="table table-bordered table-striped">
 				<thead>
-					<tr>
 				<tr>
                 <th>No</th>
                 <th>Npm</th>
@@ -35,48 +34,52 @@
 				</thead>
 				<tbody>
 				  <?php 
-                    $no = 1;
-                    $total_bobot = 0;
-                    $query=mysqli_query($koneksi,"SELECT khp.id AS id_khp, krp.kategori,khp.npm, krp.bobot, prodi.nama_prodi,khp.*, mahasiswa.*
-                    FROM khp
-                    JOIN mahasiswa ON khp.npm = mahasiswa.npm
-                    JOIN krp on khp.kode=krp.kode
-                    JOIN prodi on mahasiswa.prodi_id=prodi.id_prodi
-                    JOIN fakultas on prodi.fakultas_id=fakultas.id_fakultas
-                    WHERE  khp.status = 'menunggu' AND id_fakultas='$fakultas_id'");
-                    while($row = mysqli_fetch_assoc($query)) { 
-                        $total_bobot += $row['bobot'];
-                        ?>
-                                               
-                        <tr>
-                            <td class="text-center"><b><?= $no++; ?></b></td>
-                            <td><?= $row['npm'] ?></td>
-                            <td><?= $row['nama_lengkap'] ?></td>
-                            <td><?= $row['nama_prodi'] ?></td>
-                            <td><?= $row['kategori'] ?></td>
-                            <td><?= $row['nama_b_indo'] ?></td>
-                            <td><?= $row['nama_b_inggris'] ?></td>
-                           
-                            <td>
-                               <a href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
-                                   <i class="bi bi-eye fs-5 text-decoration-none"></i>
-                                </a>
-                                
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" title="Download" download>
-                                  <i class="bi bi-cloud-download fs-5 text-decoration-none"></i></a>
-                                </td>
-                                <form action="" method="post">
-                                  <input type="hidden" name="id_khp" value="<?= $row['id_khp'] ?>">
-                                  <td class="text-center"><?= $row['bobot'] ?></td>
-                                  
-                                  <td class="text-center">
-                                    <button type="submit" name="setuju" class="btn text-white">Setujui</button>
-                                  </form>
-                                   <a href="#" data-bs-toggle="modal" data-bs-target="#modaltolak<?= $row['id_khp'] ?>" title="View" class="btn text-white mt-2 p-1" style="background-color: red;">
-                                   Tolak
-                                </a>
-                          </td>
-                          </tr>
+    $no = 1;
+    // Query Anda sudah benar
+    $query = mysqli_query($koneksi, "SELECT khp.id AS id_khp, krp.kategori, khp.npm, krp.bobot, prodi.nama_prodi, khp.*, mahasiswa.*
+        FROM khp
+        JOIN mahasiswa ON khp.npm = mahasiswa.npm
+        JOIN krp on khp.kode=krp.kode
+        JOIN prodi on mahasiswa.prodi_id=prodi.id_prodi
+        JOIN fakultas on prodi.fakultas_id=fakultas.id_fakultas
+        WHERE khp.status = 'menunggu' AND id_fakultas='$fakultas_id'");
+        
+    while($row = mysqli_fetch_assoc($query)) { 
+    ?>
+ 
+            <tr>
+                <td class="text-center"><b><?= $no++; ?></b></td>
+                <td><?= htmlspecialchars($row['npm']) ?></td>
+                <td><?= htmlspecialchars($row['nama_lengkap']) ?></td>
+                <td><?= htmlspecialchars($row['nama_prodi']) ?></td>
+                <td><?= htmlspecialchars($row['kategori']) ?></td>
+                <td><?= htmlspecialchars($row['nama_b_indo']) ?></td>
+                <td><?= htmlspecialchars($row['nama_b_inggris']) ?></td>
+                
+                <td class="text-center" style="white-space: nowrap;">
+                    <a href="#" class="btn btn-sm btn-light border me-1" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="Lihat File">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="./dist/img/file_skpi_mhs/<?= $row['file'] ?>" class="btn btn-sm btn-light border" title="Download File" download>
+                        <i class="bi bi-cloud-download"></i>
+                    </a>
+                </td>
+       <form action="" method="post">
+                <td class="text-center" style="min-width: 100px;">
+                    <input type="number" class="form-control form-control-sm text-center" name="bobot_disetujui" value="<?= htmlspecialchars($row['bobot']) ?>">
+                </td>
+                
+                <td class="text-center" style="white-space: nowrap;">
+                    <input type="hidden" name="id_khp" value="<?= $row['id_khp'] ?>">
+
+                    <button type="submit" name="setuju" class="btn btn-primary btn-sm">Setujui</button>
+    </form>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modaltolak<?= $row['id_khp'] ?>" class="btn btn-danger btn-sm mt-1">
+                       Tolak
+                    </a>
+                </td>
+            </tr>
+    
 
 <!-- modal view -->
 <div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -322,7 +325,11 @@ $json_data = json_encode($prodi_data_values);
 <?php
 if (isset($_POST['setuju'])) {
     $id_khp = $_POST['id_khp'];
-    $update = mysqli_query($koneksi, "UPDATE khp SET status='diterima' WHERE id='$id_khp'");
+    $bobot = $_POST['bobot_disetujui'];
+    $update = mysqli_query($koneksi, "UPDATE khp SET 
+    status='diterima',
+    bobot_disetujui='$bobot'
+    WHERE id='$id_khp'");
 
     if ($update) {
         echo "<script>

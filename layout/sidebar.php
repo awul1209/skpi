@@ -180,10 +180,10 @@
 						</li>
 						
 						<li class="nav-item has-treeview" style="transition: all 0.3s ease-in-out;">
-							<a href="?page=nilai-rata-rata" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
+							<a href="?page=hasil-khp" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
 						<img src="dist/img/rekapabsen.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 4px;">
 								<p  style="color: #fff;">
-									Laporan
+									Detail SKPI
 								</p>
 							</a>
 						</li>

@@ -1,121 +1,115 @@
-<?php  
-$id_prodi=$_GET['kode'];
-$nama_prodi=mysqli_query($koneksi,"SELECT nama_prodi FROM prodi where id_prodi='$id_prodi'");
-$row_prodi=mysqli_fetch_assoc($nama_prodi);
+<?php
+// Diasumsikan file koneksi.php sudah di-include
+// include 'inc/koneksi.php'; 
+
+// Ambil parameter Prodi dari URL
+$id_prodi = $_GET['kode'];
+$nama_prodi_query = mysqli_query($koneksi, "SELECT nama_prodi, fakultas_id FROM prodi WHERE id_prodi='$id_prodi'");
+$row_prodi = mysqli_fetch_assoc($nama_prodi_query);
+$fakultas_id = $row_prodi['fakultas_id'];
+
+// ===================================================================
+// BAGIAN 1: QUERY SQL BARU UNTUK REKAPITULASI PER MAHASISWA
+// ===================================================================
+// Query ini mengelompokkan data per mahasiswa, menjumlahkan bobot,
+// dan mengambil tanggal kegiatan terakhir yang diterima.
+$query = mysqli_query($koneksi, "
+    SELECT 
+        mahasiswa.npm,
+        mahasiswa.nama_lengkap,
+        prodi.nama_prodi,
+        SUM(krp.bobot) AS total_poin_skpi,
+        MAX(khp.updated_at) AS tanggal_terakhir_diterima
+    FROM 
+        khp
+    JOIN 
+        mahasiswa ON khp.npm = mahasiswa.npm
+    JOIN 
+        krp ON khp.kode = krp.kode
+    JOIN 
+        prodi ON mahasiswa.prodi_id = prodi.id_prodi
+    JOIN 
+        fakultas ON prodi.fakultas_id = fakultas.id_fakultas
+    WHERE 
+        khp.status = 'diterima' 
+        AND fakultas.id_fakultas = '$fakultas_id' 
+        AND mahasiswa.prodi_id = '$id_prodi'
+    GROUP BY
+        mahasiswa.npm,
+        mahasiswa.nama_lengkap,
+        prodi.nama_prodi
+    ORDER BY
+        total_poin_skpi DESC
+");
+
 ?>
 
-<!-- Include jQuery and DataTables CSS/JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="card" style="margin-top: 50px;">
+    <div class="card-header text-white" style="background-color: #060930;">
+        <h3 class="card-title"><i class="bi bi-journal-check"></i> Poin SKPI Mahasiswa Prodi <?= htmlspecialchars($row_prodi['nama_prodi']); ?></h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="rekapTable" class="table table-bordered table-striped table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal Terakhir Diterima</th>
+                        <th>NPM</th>
+                        <th>Nama Mahasiswa</th>
+                        <th>Program Studi</th>
+                        <th>Total Poin SKPI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (mysqli_num_rows($query) > 0): ?>
+                        <?php
+                        $no = 1;
+                        while($row = mysqli_fetch_assoc($query)):
+                            // Format tanggal agar lebih mudah dibaca
+                            $tanggal_diterima = date('d F Y', strtotime($row['tanggal_terakhir_diterima']));
+                        ?>
+                            <tr>
+                                <td class="text-center"><b><?= $no++; ?></b></td>
+                                <td><?= $tanggal_diterima; ?></td>
+                                <td><?= htmlspecialchars($row['npm']); ?></td>
+                                <td><?= htmlspecialchars($row['nama_lengkap']); ?></td>
+                                <td><?= htmlspecialchars($row['nama_prodi']); ?></td>
+                                <td class="text-center fw-bold fs-5 text-primary"><?= htmlspecialchars($row['total_poin_skpi']); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6" class="text-center p-4">
+                                <div class="alert alert-warning mb-0">
+                                    Belum ada data KHP yang diterima untuk Prodi ini.
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-
-
-
-<!-- Tabel Data Siswa dengan DataTables -->
-<div class="card" style="margin-top: 50px;">
-  <div class="card-header text-white" style="background-color: #060930;">
-    <h3 class="card-title"><i class="fa fa-table"></i> Data SKPI Prodi <?= $row_prodi['nama_prodi']; ?></h3>
-  </div>
-  <div class="card-body">
-    <div class="table-responsive">
-      <table id="example1" class="table table-bordered table-striped">
-        <thead>
-          <tr>
-                <th>No</th>
-                <th>Tanggal Diterima</th>
-                <th>Npm</th>
-                <th>Nama</th>
-                <!-- <th>Prodi</th> -->
-                <th>Kategori</th>
-                <th>Judul (Idn)</th>
-                <th>Judul (Eng)</th>
-                <th>file</th>
-                <th>Skor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $no = 1;
-           $total_bobot = 0;
-                    $query=mysqli_query($koneksi,"SELECT khp.id AS id_khp, krp.kategori,khp.npm,khp.updated_at, krp.bobot, prodi.nama_prodi,khp.*, mahasiswa.*
-                    FROM khp
-                    JOIN mahasiswa ON khp.npm = mahasiswa.npm
-                    JOIN krp on khp.kode=krp.kode
-                    JOIN prodi on mahasiswa.prodi_id=prodi.id_prodi
-                    JOIN fakultas on prodi.fakultas_id=fakultas.id_fakultas
-                    WHERE  khp.status = 'diterima' AND id_fakultas='$fakultas_id' AND mahasiswa.prodi_id='$id_prodi'");
-                    while($row = mysqli_fetch_assoc($query)) { 
-                        $total_bobot += $row['bobot'];
-                        $tanggal = date('Y-m-d', strtotime($row['updated_at']));
-                        ?>
-                        <tr>
-                            <td class="text-center"><b><?= $no++; ?></b></td>
-                            <td><?= $tanggal; ?></td>
-                            <td><?= $row['npm'] ?></td>
-                            <td><?= $row['nama_lengkap'] ?></td>
-                            <!-- <td><?= $row['nama_prodi'] ?></td> -->
-                            <td><?= $row['kategori'] ?></td>
-                            <td><?= $row['nama_b_indo'] ?></td>
-                            <td><?= $row['nama_b_inggris'] ?></td>
-                           
-                            <td>
-                               <a href="" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
-                                   <i style="font-size: 20px;" class="bi bi-eye text-decoration-none"></i>
-                                </a>
-                              <br>
-                              <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" title="Download" download>
-                                <i style="font-size: 20px;" class="bi bi-cloud-download text-decoration-none"></i>
-                              </a>
-                            </td>
-                            <td class="text-center"><?= $row['bobot'] ?></td>
-                            <!-- <td class="text-center"><button class="btn text-white">Setujui</button></td> -->
-                        </tr>
-                        
-                      <!-- modal view -->
-                      <div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered modal-md">
-                      <div class="modal-content">
-                      <div class="modal-header">
-                      <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= $row['kategori'] ?></h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                      </div>
-                      <div class="modal-body">
-                      <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="100%" height="600px"></iframe>
-
-
-                      <!-- Tombol -->
-                      <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-
-                      </div>
-                      </form>
-                      </div>
-                      </div>
-                      </div>
-                      </div>
-                      <!-- end modal view -->
-          <?php } ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<!-- Bootstrap JS + Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables Initialization -->
+
 <script>
-  $(document).ready(function() {
-    $('#example1').DataTable({
-      "pageLength": 5,
-      "lengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]],
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
+$(document).ready(function() {
+    $('#rekapTable').DataTable({
+        "pageLength": 10,
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Semua"]],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
+        },
+        "order": [[ 5, "desc" ]] // Urutkan berdasarkan kolom ke-6 (Poin SKPI) secara descending
     });
-  });
+});
 </script>

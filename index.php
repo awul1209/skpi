@@ -4,7 +4,7 @@ session_start();
 include 'vendor/autoload.php';
 //KONEKSI DB
 include 'inc/koneksi.php';
-error_reporting(0);
+// error_reporting(0);
 if (isset($_SESSION['login']) == '' && isset($_SESSION['s_iduser']) == '') {
     header('location: login.php');
 } else {
@@ -22,6 +22,8 @@ if (isset($_SESSION['login']) == '' && isset($_SESSION['s_iduser']) == '') {
 	$fakultas=mysqli_query($koneksi,"select * from fakultas where id_fakultas='$fakultas_id'");
 	$row_fakultas=mysqli_fetch_assoc($fakultas);
 	$nama_fakultas=$row_fakultas['nama_fakultas'];
+
+	
 }
 
 
