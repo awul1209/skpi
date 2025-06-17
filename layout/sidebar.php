@@ -41,7 +41,7 @@
 						<!-- Level  -->
 						<?php if ($data_level == 'admin') { ?>
 							<li class="nav-item" style="transition: all 0.3s ease-in-out;">
-								<a href="index.php" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
+								<a href="index.php" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;<?php echo ($page == '' || $page=='home') ? 'background-color: rgba(255, 255, 255, 0.2); border-left: 3px solid white;' : ''; ?>">
 									<img src="dist/img/iconsidebar/home.png" alt="" style="width: 23px; margin-left: 0px; margin-right: 4px; transition: transform 0.3s ease-in-out;">
 									<p style="color: #fff; margin: 0; transition: color 0.3s ease-in-out;">
 										Dashboard Admin
@@ -49,78 +49,63 @@
 								</a>
 							</li>
 
-						<li class="nav-item has-treeview" style="transition: all 0.3s ease-in-out;">
-							<a href="#" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-							<img src="dist/img/iconsidebar/data.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 4px;">
-								<p  style="color: #fff;">
-									Data Master
-									<i class="fas fa-angle-left right"></i>
-								</p>
-							</a>
-							<ul class="nav nav-treeview">
-								<li class="nav-item">
-									<a href="?page=data-user" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-										<i class="nav-icon far fa-circle text-white"></i>
-										<p  style="color: #fff;">Data User</p>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="?page=data-siswa" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-										<i class="nav-icon far fa-circle text-white"></i>
-										<p  style="color: #fff;">Data Siswa</p>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="?page=data-kelas" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-										<i class="nav-icon far fa-circle text-white"></i>
-										<p  style="color: #fff;">Data Kelas</p>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="?page=data-matpel" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-										<i class="nav-icon far fa-circle text-white"></i>
-										<p  style="color: #fff;">Data Mata Pelajaran</p>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="?page=data-jadwal" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-										<i class="nav-icon far fa-circle text-white"></i>
-										<p  style="color: #fff;">Jadwal</p>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="?page=data-kriteria" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-										<i class="nav-icon far fa-circle text-white"></i>
-										<p  style="color: #fff;">Data Kriteria Penilian</p>
-									</a>
-								</li>
-							</ul>
+						<li class="nav-item has-treeview">
+								<a href="#" class="nav-link" 	style="display: flex; align-items: center; gap:6px; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;<?php echo ($page == 'data_mhs_staff') ? 'background-color: rgba(255, 255, 255, 0.2); border-left: 3px solid white;' : ''; ?>">
+									<img src="dist/img/iconsidebar/data.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 4px;">
+									<p  style="color: #fff;">
+										Data Mahasiswa
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+<ul class="nav nav-treeview">
+    <?php
+    // ===================================================================
+    // PERUBAHAN DI SINI: Query sekarang mengambil dari tabel 'fakultas'
+    // WHERE dihapus untuk menampilkan SEMUA fakultas.
+    // ORDER BY ditambahkan agar daftar urut sesuai abjad.
+    // ===================================================================
+    $menu_fakultas = mysqli_query($koneksi, "SELECT * FROM fakultas ORDER BY nama_fakultas ASC");
+    
+    while($row_fakultas = mysqli_fetch_assoc($menu_fakultas)) {
+    ?>
+        <li class="nav-item">
+            <?php
+                // PERUBAHAN DI SINI: Link sekarang mengirimkan id_fakultas sebagai parameter 'kode'
+                // Halaman tujuan (?page=data_mhs_staff) tetap sama, namun parameter 'kode' kini berisi ID Fakultas
+            ?>
+            <a href="?page=data_mhs_staff&kodefk=<?= $row_fakultas['id_fakultas'] ?>" class="nav-link">
+                <i class="nav-icon far fa-circle text-white"></i>
+                
+                <?php
+                    // PERUBAHAN DI SINI: Teks sekarang menampilkan nama_fakultas
+                ?>
+                <p style="color: #fff;"><?= htmlspecialchars($row_fakultas['nama_fakultas']); ?></p>
+            </a>
+        </li>
+    <?php 
+    } // Akhir loop while
+    ?>
+</ul>
 						</li>
 						<li class="nav-item has-treeview" style="transition: all 0.3s ease-in-out;">
-							<a href="?page=rekap-absensi" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-								<img src="dist/img/rekapabsen.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 4px;">
+						<a href="?page=data-krp-admin" class="nav-link" 
+							style="display: flex; align-items: center; gap:6px; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;<?php echo ($page == 'data-krp-admin' || $page=='data-krp-admin') ? 'background-color: rgba(255, 255, 255, 0.2); border-left: 3px solid white;' : ''; ?>">
+								<img src="dist/img/iconsidebar/2.png" alt="" style="width: 20px; margin-left: 0px; margin-right: 4px;">
+								<p style="color: #fff;">KRP</p>
+							</a>
+						</li>
+						<li class="nav-item has-treeview" style="transition: all 0.3s ease-in-out;">
+							<a href="?page=data-skpi-admin" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;<?php echo ($page == 'data-skpi-admin') ? 'background-color: rgba(255, 255, 255, 0.2); border-left: 3px solid white;' : ''; ?>">
+										<img src="dist/img/pn.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 4px;">
+								
 								<p  style="color: #fff;">
-									Rekap Absensi
+									SKPI
+									
+									</p>
 								</p>
 							</a>
 						</li>
 						
-						<li class="nav-item has-treeview" style="transition: all 0.3s ease-in-out;">
-							<a href="?page=nilai-rata-rata" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-								<img src="dist/img/pn.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 4px;">
-								<p  style="color: #fff;">
-									Nilai
-								</p>
-							</a>
-						</li>
-						<li class="nav-item has-treeview" style="transition: all 0.3s ease-in-out;">
-							<a href="?page=pilih-rangking" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;">
-								<img src="dist/img/rangking.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 4px;">
-								<p  style="color: #fff;">
-									Rangking
-								</p>
-							</a>
-						</li>
 						<?php } else if ($data_level == 'staff') { ?>
 							<li class="nav-item" style="transition: all 0.3s ease-in-out;">
 							<a href="?page=home_staff" 
@@ -144,7 +129,7 @@
 									while($row_menu=mysqli_fetch_assoc($menu)){
 									?>
 									<li class="nav-item ">
-										<a href="?page=data_mhs_staff&kode=<?= $row_menu['id_prodi'] ?>" class="nav-link">
+										<a href="?page=data_mhs_staff&kodepr=<?= $row_menu['id_prodi'] ?>" class="nav-link">
 											<i class="nav-icon far fa-circle text-white"></i>
 											<p  style="color: #fff;"><?= $row_menu['nama_prodi']; ?></p>
 										</a>

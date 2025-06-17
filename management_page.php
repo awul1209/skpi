@@ -148,6 +148,14 @@ if (isset($_GET['page'])) {
             include 'admin/jadwal/jadwal_kelas.php';
             break;
 
+            // krp admin
+        case 'data-krp-admin':
+            include 'admin/krp/admin_index.php';
+            break;
+        case 'data-skpi-admin':
+            include 'admin/hasil_khp/index_admin.php';
+            break;
+
          
 
       

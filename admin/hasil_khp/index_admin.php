@@ -1,15 +1,11 @@
 <?php
-// Diasumsikan file koneksi.php sudah di-include
-// include 'inc/koneksi.php'; 
-
-// ===================================================================
-// BAGIAN 1: PROSES HAPUS & PENCARIAN
-// ===================================================================
+// Diasumsikan file ini di-include ke dalam file index.php utama Anda
+// dan koneksi.php sudah di-require sebelumnya.
 
 // Logika untuk proses hapus data
 if (isset($_GET['hapus'])) {
     $id_khp_to_delete = mysqli_real_escape_string($koneksi, $_GET['hapus']);
-    // ... (kode hapus lengkap dari jawaban sebelumnya) ...
+    // Pastikan untuk menambahkan logika keamanan yang sesuai sebelum menghapus
     $delete_query = mysqli_query($koneksi, "DELETE FROM khp WHERE id = '$id_khp_to_delete'");
     if ($delete_query) {
         echo "<script>
@@ -22,8 +18,8 @@ if (isset($_GET['hapus'])) {
     exit;
 }
 
-// Inisialisasi variabel
-$search_npm = ''; $search_nama = ''; $search_tahun = ''; $search_periode = '';
+// Inisialisasi variabel pencarian
+$search_fakultas = ''; $search_prodi = ''; $search_tahun = ''; $search_periode = '';
 $total_bobot_mahasiswa = null;
 $nama_mahasiswa_dicari = '';
 
@@ -33,35 +29,34 @@ $sql_base = "SELECT
                 mahasiswa.nama_lengkap, 
                 krp.nama as nama_kegiatan,
                 khp.bobot_disetujui,
-                prodi.nama_prodi
+                prodi.nama_prodi,
+                fakultas.nama_fakultas
              FROM khp
              JOIN mahasiswa ON khp.npm = mahasiswa.npm
              JOIN krp ON khp.kode = krp.kode
              JOIN prodi ON mahasiswa.prodi_id = prodi.id_prodi
-             JOIN fakultas ON prodi.fakultas_id=fakultas.id_fakultas
+             JOIN fakultas on prodi.fakultas_id = fakultas.id_fakultas
              ";
 
 // Siapkan klausa WHERE dengan filter status default
-$where_clauses = ["khp.status = 'diterima'","fakultas.id_fakultas='$fakultas_id'"];
+$where_clauses = ["khp.status = 'diterima'"];
 
-// Proses filter jika form disubmit
+// Proses filter jika form disubmit via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cari'])) {
-    $search_npm = mysqli_real_escape_string($koneksi, $_POST['npm']);
-    $search_nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
+    $search_fakultas = mysqli_real_escape_string($koneksi, $_POST['fakultas']);
+    $search_prodi = mysqli_real_escape_string($koneksi, $_POST['prodi']);
     $search_tahun = mysqli_real_escape_string($koneksi, $_POST['tahun']);
     $search_periode = mysqli_real_escape_string($koneksi, $_POST['periode']);
 
-    if (!empty($search_npm)) $where_clauses[] = "khp.npm LIKE '%$search_npm%'";
-    if (!empty($search_nama)) $where_clauses[] = "mahasiswa.nama_lengkap LIKE '%$search_nama%'";
+    if (!empty($search_fakultas)) $where_clauses[] = "fakultas.id_fakultas = '$search_fakultas'";
+    if (!empty($search_prodi)) $where_clauses[] = "prodi.id_prodi = '$search_prodi'";
     if (!empty($search_tahun)) $where_clauses[] = "khp.tahun = '$search_tahun'";
     if (!empty($search_periode)) $where_clauses[] = "khp.periode = '$search_periode'";
 }
 
 // Gabungkan semua kondisi WHERE
-if (count($where_clauses) > 1) { // Lebih dari 1 karena 'status' sudah ada
+if (count($where_clauses) > 0) {
     $sql_base .= " WHERE " . implode(' AND ', $where_clauses);
-} else {
-    $sql_base .= " WHERE " . $where_clauses[0];
 }
 
 $sql_base .= " ORDER BY khp.created_at DESC";
@@ -73,16 +68,25 @@ while ($row = mysqli_fetch_assoc($result)) {
     $khp_list[] = $row;
 }
 
-// Logika perhitungan total bobot
-if (!empty($search_npm) || !empty($search_nama)) {
-    if (!empty($khp_list)) {
-        $npm_untuk_total = $khp_list[0]['npm'];
-        $nama_mahasiswa_dicari = $khp_list[0]['nama_lengkap'];
-        $query_total = "SELECT SUM(krp.bobot) as total_bobot FROM khp JOIN krp ON khp.kode = krp.kode WHERE khp.npm = '$npm_untuk_total' AND khp.status = 'diterima'";
-        $hasil_total = mysqli_query($koneksi, $query_total);
-        $data_total = mysqli_fetch_assoc($hasil_total);
-        $total_bobot_mahasiswa = $data_total['total_bobot'] ?? 0;
+// Logika perhitungan total bobot disesuaikan
+$is_single_student = false;
+if (!empty($khp_list)) {
+    $first_npm = $khp_list[0]['npm'];
+    $is_single_student = true;
+    foreach ($khp_list as $item) {
+        if ($item['npm'] !== $first_npm) {
+            $is_single_student = false;
+            break;
+        }
     }
+}
+if ($is_single_student) {
+    $npm_untuk_total = $khp_list[0]['npm'];
+    $nama_mahasiswa_dicari = $khp_list[0]['nama_lengkap'];
+    $query_total = "SELECT SUM(khp.bobot_disetujui) as total_bobot FROM khp WHERE khp.npm = '$npm_untuk_total' AND khp.status = 'diterima'";
+    $hasil_total = mysqli_query($koneksi, $query_total);
+    $data_total = mysqli_fetch_assoc($hasil_total);
+    $total_bobot_mahasiswa = $data_total['total_bobot'] ?? 0;
 }
 ?>
 
@@ -98,15 +102,33 @@ if (!empty($search_npm) || !empty($search_nama)) {
             <i class="bi bi-search"></i> Pencarian Data KHP
         </div>
         <div class="card-body">
-            <form action="" method="post">
+            <form action="?page=data-skpi-admin" method="post" class="mb-3">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
-                        <label for="npm" class="form-label">NPM</label>
-                        <input type="text" class="form-control" name="npm" id="npm" placeholder="Cari NPM..." value="<?= htmlspecialchars($search_npm) ?>">
+                        <label for="fakultas" class="form-label">Fakultas</label>
+                        <select name="fakultas" id="fakultas" class="form-select">
+                            <option value="">-- Semua Fakultas --</option>
+                            <?php
+                                $q_fakultas = mysqli_query($koneksi, "SELECT * FROM fakultas ORDER BY nama_fakultas");
+                                while($d_fak = mysqli_fetch_assoc($q_fakultas)) {
+                                    $selected = ($d_fak['id_fakultas'] == $search_fakultas) ? 'selected' : '';
+                                    echo "<option value='{$d_fak['id_fakultas']}' $selected>" . htmlspecialchars($d_fak['nama_fakultas']) . "</option>";
+                                }
+                            ?>
+                        </select>
                     </div>
                     <div class="col-md-3">
-                        <label for="nama" class="form-label">Nama Mahasiswa</label>
-                        <input type="text" class="form-control" name="nama" id="nama" placeholder="Cari Nama..." value="<?= htmlspecialchars($search_nama) ?>">
+                        <label for="prodi" class="form-label">Program Studi</label>
+                         <select name="prodi" id="prodi" class="form-select">
+                            <option value="">-- Semua Prodi --</option>
+                             <?php
+                                $q_prodi = mysqli_query($koneksi, "SELECT * FROM prodi ORDER BY nama_prodi");
+                                while($d_prodi = mysqli_fetch_assoc($q_prodi)) {
+                                    $selected = ($d_prodi['id_prodi'] == $search_prodi) ? 'selected' : '';
+                                    echo "<option value='{$d_prodi['id_prodi']}' $selected>" . htmlspecialchars($d_prodi['nama_prodi']) . "</option>";
+                                }
+                            ?>
+                        </select>
                     </div>
                     <div class="col-md-2">
                         <label for="tahun" class="form-label">Tahun Akademik</label>
@@ -132,23 +154,34 @@ if (!empty($search_npm) || !empty($search_nama)) {
                     </div>
                     <div class="col-md-2">
                         <button type="submit" name="cari" class="btn btn-primary w-100"><i class="bi bi-funnel-fill"></i> Filter</button>
-                        <a href="?page=hasil-khp" class="btn btn-secondary w-100 mt-1">Reset</a>
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
+            
+           <hr>
+            <div>
+                <a href="?page=data-skpi-admin" class="btn btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Reset Filter</a>
 
-    <?php if ($total_bobot_mahasiswa !== null): ?>
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-info text-white fw-bold"><i class="bi bi-star-fill"></i> Akumulasi Bobot Mahasiswa</div>
-        <div class="card-body text-center">
-            <h5 class="card-title"><?= htmlspecialchars($nama_mahasiswa_dicari) ?></h5>
-            <p class="card-text">Total bobot yang telah diperoleh dari seluruh kegiatan KHP adalah:</p>
-            <p class="display-4 fw-bold text-primary"><?= $total_bobot_mahasiswa ?></p>
+                <?php
+                // PERUBAHAN: Tombol cetak hanya akan muncul jika ada hasil data dari filter
+                if (!empty($khp_list)) :
+                    // Menyiapkan parameter filter yang sedang aktif untuk link cetak
+                    $print_params = [
+                        'fakultas' => $search_fakultas,
+                        'prodi' => $search_prodi,
+                        'tahun' => $search_tahun,
+                        'periode' => $search_periode
+                    ];
+                    $print_params = array_filter($print_params); // Hapus filter yang kosong
+                    $print_query_string = http_build_query($print_params);
+                ?>
+                    <a href="admin/hasil_khp/cetak_laporan_skpi.php?<?= $print_query_string ?>" target="_blank" class="btn btn-danger">
+                        <i class="bi bi-file-earmark-pdf-fill"></i> Cetak Laporan PDF
+                    </a>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
-    <?php endif; ?>
 
     <div class="card shadow-sm">
         <div class="card-header fw-bold text-white" style="background-color: #060930;"><i class="bi bi-table"></i> Data Hasil Kartu Partisipasi (KHP)</div>
@@ -173,7 +206,7 @@ if (!empty($search_npm) || !empty($search_nama)) {
                                     <td><?= htmlspecialchars($row['tahun']) ?></td>
                                     <td><?= htmlspecialchars($row['periode']) ?></td>
                                     <td class="text-center fw-bold"><?= htmlspecialchars($row['bobot_disetujui']) ?></td>
-                                  <td class="text-center" style="white-space: nowrap;">
+                                    <td class="text-center" style="white-space: nowrap;">
                                         <button type="button" class="btn btn-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#modalFile<?= $row['id'] ?>" title="Lihat File"><i class="bi bi-eye-fill"></i></button>
                                         <a href="dist/img/file_skpi_mhs/<?= htmlspecialchars($row['file']) ?>" class="btn btn-success btn-sm me-1" title="Download File" download><i class="bi bi-download"></i></a>
                                         <a href="?page=hasil-khp&hapus=<?= $row['id'] ?>" class="btn btn-danger btn-sm" title="Hapus Data" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');"><i class="bi bi-trash-fill"></i></a>
@@ -181,7 +214,7 @@ if (!empty($search_npm) || !empty($search_nama)) {
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <tr><td colspan="10" class="text-center">Tidak ada data yang ditemukan.</td></tr>
+                            <tr><td colspan="10" class="text-center">Tidak ada data yang ditemukan. Silakan sesuaikan filter Anda.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -220,6 +253,7 @@ if (!empty($search_npm) || !empty($search_nama)) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 $(document).ready(function() {
+    // Inisialisasi DataTable untuk pengurutan dan pencarian sisi klien (opsional)
     $('#hasilKhpTable').DataTable();
 });
 </script>

@@ -4,7 +4,7 @@ session_start();
 include 'vendor/autoload.php';
 //KONEKSI DB
 include 'inc/koneksi.php';
-// error_reporting(0);
+error_reporting(0);
 if (isset($_SESSION['login']) == '' && isset($_SESSION['s_iduser']) == '') {
     header('location: login.php');
 } else {

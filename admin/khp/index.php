@@ -645,7 +645,9 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
       <div class="modal-body">
-       <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="100%" height="600px"></iframe>
+        <center>
+            <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+        </center>
 
 
           <!-- Tombol -->
@@ -837,7 +839,8 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                                 </a>
 
                               <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" title="Download" download>
-                                <i class="bi bi-cloud-download fs-5"></i></a>
+                                <i class="bi bi-cloud-download fs-5"></i>
+                            </a>
                             </td>
                             <!-- <td><?= $row['tahun'] ?> | <?= $row['periode'] ?></td> -->
 
@@ -883,7 +886,10 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
       <div class="modal-body">
-       <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="100%" height="600px"></iframe>
+
+              <center>
+            <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+        </center>
 
 
           <!-- Tombol -->
@@ -988,13 +994,15 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
 
 <div class="mb-3">
     <label class="form-label">Preview File</label>
-    
+    <center>
     <iframe id="filePreview<?= $row['id_khp'] ?>" 
             src="<?php echo !empty($row['file']) ? '././dist/img/file_skpi_mhs/' . rawurlencode($row['file']) : '' ?>" 
-            width="100%" 
+            width="90%" 
             height="300px" 
             style="border: 1px solid #ccc; <?php echo empty($row['file']) ? 'display: none;' : '' ?>">
     </iframe>
+    </center>
+
     
     <?php if (empty($row['file'])): ?>
         <div id="noFileMessage<?= $row['id_khp'] ?>" class="text-center p-3" style="border: 1px dashed #ccc;">

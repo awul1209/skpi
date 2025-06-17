@@ -71,8 +71,9 @@ include 'inc/koneksi.php';
 					<div class="input-group mb-3">
 					<select class="form-control text-center border border-1" aria-label="select example" name="sebagai">
 					<option selected>--Login Sebagai--</option>
-					<option value="mahasiswa">Mahasiswa</option>
+					<option value="admin">Admin</option>
 					<option value="staff">Staff</option>
+					<option value="mahasiswa">Mahasiswa</option>
 					</select>
 					</div>
 					<br>
@@ -148,7 +149,46 @@ include 'inc/koneksi.php';
 		})</script>";
 	}
 
-	}elseif($sebagai == 'mahasiswa'){
+	}elseif($sebagai == 'admin'){
+		//query login
+		$sql_login = "SELECT * FROM user WHERE BINARY username='$username'";
+		$query_login = mysqli_query($koneksi, $sql_login);
+		$data_login = mysqli_fetch_array($query_login, MYSQLI_BOTH);
+		$jumlah_login = mysqli_num_rows($query_login);
+
+		
+		if ($jumlah_login == 1) {
+			if (password_verify($password, $data_login['password'])) {
+
+			$_SESSION['s_iduser'] = $data_login['id_user'];
+			$_SESSION['s_username'] = $data_login['username'];
+			$_SESSION['s_password'] = $data_login['password'];
+			$_SESSION['s_level'] = 'admin';
+			// $_SESSION['s_prodi'] = $data_login['prodi_id'];
+			$_SESSION['login'] = true;
+			
+			echo "<script>
+				Swal.fire({title: 'Login Berhasil',text: '',icon: 'success',confirmButtonText: 'OK'
+				}).then((result) => {if (result.value)
+					{window.location = 'index.php';}
+				})</script>";
+		} else {
+			echo "<script>
+				Swal.fire({title: 'Login Gagal',text: '',icon: 'error',confirmButtonText: 'OK'
+				}).then((result) => {if (result.value)
+					{window.location = 'login.php';}
+				})</script>";
+		}
+	}else{
+		echo "<script>
+		Swal.fire({title: 'Username atau Password Salah',text: '',icon: 'error',confirmButtonText: 'OK'
+		}).then((result) => {if (result.value)
+			{window.location = 'login.php';}
+		})</script>";
+	}
+
+	}
+	elseif($sebagai == 'mahasiswa'){
 		//query login
 		$sql_login = "SELECT * FROM mahasiswa WHERE BINARY npm='$username'";
 		$query_login = mysqli_query($koneksi, $sql_login);
