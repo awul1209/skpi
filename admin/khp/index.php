@@ -1,5 +1,5 @@
 <?php
-$kategori = '';
+$kategori = 'Kartu Rencana Partisipasi';
 if (isset($_POST['btn_kategori'])) {
     $kategori = $_POST['kategori'];
 }
@@ -37,7 +37,7 @@ if (isset($_POST['btn_kategori'])) {
 $query_cekkhp=mysqli_query($koneksi,"SELECT * FROM khp where  tahun = '$tahunAjaran' AND (status = 'menunggu' OR status = 'diterima') AND periode = '$periode' AND npm='$data_id'");
 if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
     <div class="tabs">
-        <form action="" method="post">
+        <!-- <form action="" method="post">
             <input type="hidden" name="kategori" value="Wajib Universitas">
             <button class="button tab-button btn btn-outline-primary" type="submit" name="btn_kategori" style="<?= $kategori == 'Wajib Universitas' ? 'background-color:#0d6efd;' : '' ?>">Wajib Univ/Fakultas</button>
         </form>
@@ -56,7 +56,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
         <form action="" method="post">
             <input type="hidden" name="kategori" value="Sosial dan Lainnya">
             <button class="button tab-button btn btn-outline-primary" type="submit" name="btn_kategori" style="<?= $kategori == 'Sosial dan Lainnya' ? 'background-color:#0d6efd;' : '' ?>">Sosial & Lainnya</button>
-        </form>
+        </form> -->
         <form action="" method="post">
             <input type="hidden" name="kategori" value="Kartu Rencana Partisipasi">
             <button class="button tab-button btn btn-outline-primary" type="submit" name="btn_kategori" style="<?= $kategori == 'Kartu Rencana Partisipasi' ? 'background-color:#0d6efd;' : '' ?>">KRP</button>
@@ -67,8 +67,8 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
         </form>
     </div>
 
-    <div class="card mt-3" style="    background-color: white;">
-        <div class="card-header" id="cardTitle"><?= $kategori ?: 'Pilih Kategori' ?></div>
+    <div class="card mt-3" style=" background-color: white;">
+        <div class="card-header" id="cardTitle"><?= $kategori ?> Tahun <?= $tahunAjaran ?> <?= $periode ?></div>
         <?php if($kategori == ''){ ?>
             <div class="alert alert-warning alert-dismissible fade show mt-1 ms-3 me-3" role="alert">
              <strong>Pilih Kategori KHP Yang Akan Di Tambahkan</strong> ... !!!
@@ -111,16 +111,50 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <td><?= $row['nama_b_indo'] ?></td>
                             <td><?= $row['nama_b_inggris'] ?></td>
                             <!-- <td><?= $row['bobot'] ?></td> -->
-                            <td>
-                                <?php if($row['file'] == ''){ ?>
-                                    <a href="#" download>❌</a>
-                               <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download>
-                               <i class="bi bi-cloud-download fs-5"></i>
-                                </a>
-                                <?php } ?>
-                            </td>
+<td>
+                <?php if($row['file'] == ''){ ?>
+                    <a href="#" download>❌</a>
+                <?php } else { ?>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        
+                        <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
+                            <i class="bi bi-eye fs-5"></i>
+                        </a>
+                        
+                        <a class="text-decoration-none" href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download title="Download">
+                            <i class="bi bi-cloud-download fs-5"></i>
+                        </a>
+
+                    </div>
+                <?php } ?>
+            </td>
                         </tr>
+                         <!-- modal view -->
+<div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <?php $kate=$row['kategori']; ?>
+        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <center>
+            <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+        </center>
+
+
+          <!-- Tombol -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal view -->
                     <?php } ?>
                     <!-- <tr>
                         <td></td>
@@ -175,14 +209,50 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <td><?= $row['nama_b_indo'] ?></td>
                             <td><?= $row['nama_b_inggris'] ?></td>
                             <!-- <td><?= $row['bobot'] ?></td> -->
-                            <td>
-                                <?php if($row['file'] == ''){ ?>
-                                    <a href="#" class="text-decoration-none">❌</a>
-                               <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <i class="bi bi-cloud-download fs-5"></i></a>
-                                <?php } ?>
-                            </td>
+<td>
+                <?php if($row['file'] == ''){ ?>
+                    <a href="#" download>❌</a>
+                <?php } else { ?>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        
+                        <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
+                            <i class="bi bi-eye fs-5"></i>
+                        </a>
+                        
+                        <a class="text-decoration-none" href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download title="Download">
+                            <i class="bi bi-cloud-download fs-5"></i>
+                        </a>
+
+                    </div>
+                <?php } ?>
+            </td>
                         </tr>
+                         <!-- modal view -->
+<div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <?php $kate=$row['kategori']; ?>
+        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <center>
+            <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+        </center>
+
+
+          <!-- Tombol -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal view -->
                     <?php } ?>
                     <!-- <tr>
                         <td></td>
@@ -238,14 +308,50 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <td><?= $row['nama_b_indo'] ?></td>
                             <td><?= $row['nama_b_inggris'] ?></td>
                             <!-- <td><?= $row['bobot'] ?></td> -->
-                            <td>
-                                <?php if($row['file'] == ''){ ?>
-                                    <a href="#" download>❌</a>
-                               <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <i class="bi bi-cloud-download fs-5"></i></a>
-                                <?php } ?>
-                            </td>
+<td>
+                <?php if($row['file'] == ''){ ?>
+                    <a href="#" download>❌</a>
+                <?php } else { ?>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        
+                        <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
+                            <i class="bi bi-eye fs-5"></i>
+                        </a>
+                        
+                        <a class="text-decoration-none" href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download title="Download">
+                            <i class="bi bi-cloud-download fs-5"></i>
+                        </a>
+
+                    </div>
+                <?php } ?>
+            </td>
                         </tr>
+                         <!-- modal view -->
+<div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <?php $kate=$row['kategori']; ?>
+        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <center>
+            <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+        </center>
+
+
+          <!-- Tombol -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal view -->
                     <?php } ?>
                     <!-- <tr>
                         <td></td>
@@ -301,14 +407,50 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                                 <td><?= $row['nama_b_indo'] ?></td>
                                 <td><?= $row['nama_b_inggris'] ?></td>
                                 <!-- <td><?= $row['bobot'] ?></td> -->
-                                <td>
-                                <?php if($row['file'] == ''){ ?>
-                                    <a href="#" download>❌</a>
-                               <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <i class="bi bi-cloud-download fs-5"></i></a>
-                                <?php } ?>
-                            </td>
+<td>
+                <?php if($row['file'] == ''){ ?>
+                    <a href="#" download>❌</a>
+                <?php } else { ?>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        
+                        <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
+                            <i class="bi bi-eye fs-5"></i>
+                        </a>
+                        
+                        <a class="text-decoration-none" href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download title="Download">
+                            <i class="bi bi-cloud-download fs-5"></i>
+                        </a>
+
+                    </div>
+                <?php } ?>
+            </td>
                             </tr>
+                             <!-- modal view -->
+<div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <?php $kate=$row['kategori']; ?>
+        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <center>
+            <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+        </center>
+
+
+          <!-- Tombol -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal view -->
                         <?php } ?>
                         <!-- <tr>
                         <td></td>
@@ -364,14 +506,50 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                                 <td><?= $row['nama_b_indo'] ?></td>
                                 <td><?= $row['nama_b_inggris'] ?></td>
                                 <!-- <td><?= $row['bobot'] ?></td> -->
-                                <td>
-                                <?php if($row['file'] == ''){ ?>
-                                    <a href="#" download>❌</a>
-                               <?php } else{ ?>                             
-                                <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download> <i class="bi bi-cloud-download fs-5"></i></a>
-                                <?php } ?>
-                            </td>
+<td>
+                <?php if($row['file'] == ''){ ?>
+                    <a href="#" download>❌</a>
+                <?php } else { ?>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        
+                        <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
+                            <i class="bi bi-eye fs-5"></i>
+                        </a>
+                        
+                        <a class="text-decoration-none" href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" download title="Download">
+                            <i class="bi bi-cloud-download fs-5"></i>
+                        </a>
+
+                    </div>
+                <?php } ?>
+            </td>
                             </tr>
+                             <!-- modal view -->
+<div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <?php $kate=$row['kategori']; ?>
+        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <center>
+            <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+        </center>
+
+
+          <!-- Tombol -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal view -->
                         <?php } ?>
                         <!-- <tr>
                         <td></td>
@@ -407,22 +585,29 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                 }
                ?>
                 <div class="d-grid mb-2">
-                <?php if (!$all_file_terisi): ?>
+                <?php if (!$all_file_terisi){ ?>
                 <a href="#" class="btn btn-warning">File tidak lengkap</a>
-                <?php else: ?>
+                <?php } else{ ?>
+                <?php
+                    $cek=mysqli_query($koneksi,"SELECT * FROM khp WHERE status='' and tahun='$tahunAjaran' and periode='$periode' and npm='$data_id';");
+                    if(mysqli_num_rows($cek) > 0){?>
                 <form action="" method="post">
                     <button class="btn btn-validasi text-white" type="submit" name="validasi">Validasi</button>
                 </form>
-                <?php endif; ?>
+                <?php }else{ ?>
+                    <center>
+                        <button class="btn btn-validasi text-white" type="submit" disabled>Belum ada KHP yang dipilih!</button>;
+                    </center>
+              <?php  } ?>
+                <?php }  ?>
                 </div>
         </div>
       <!-- end Sosial dan Lainnya-->
        <!-- end validasi -->
 
        <!-- krp -->
-<?php }elseif($kategori=='Kartu Rencana Partisipasi'){ ?>
+<?php } elseif($kategori=='Kartu Rencana Partisipasi'){ ?>
   <div class="table-validasi krp">
-    <h3>Data KRP Tahun <?= $tahunAjaran ?>/<?= $periode ?></h3>
     <?php
     $query = mysqli_query($koneksi, "
       SELECT krp.id as id_krp, krp_mhs.kode, krp_mhs.npm, krp_mhs.tahun, krp_mhs.periode,
@@ -529,11 +714,14 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
             </tr> -->
         </tfoot>
     </table>
+    <a href="?page=add-krp" class="text-decoration-none">
+    <button class="btn btn-primary">Tambah Kegiatan</button>
+    </a>
     <hr>
     <?php
     } else {
         echo '
-        <div class="alert alert-warning alert-dismissible fade show mt-1 ms-3 me-3" role="alert">
+        <div class="alert alert-warning alert-dismissible fade show mt-1 ms-2 me-2" role="alert">
             <strong>Belum ada data KRP yang dipilih</strong> ... !!!
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>';
@@ -566,23 +754,19 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
 </div>
 
       <!-- end krp-->
-<?php }else { ?>
-        <!-- Tombol tambah hanya muncul jika kategori terpilih -->
-        <?php if ($kategori): ?>
-            <!-- <button type="button" class="btn btn-primary add-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Tambah Kegiatan
-            </button> -->
-        <?php endif; ?>
 
-<?php if ($kategori != '') {
-    $query = mysqli_query($koneksi, "SELECT khp.id as id_khp, khp.kode,no_sertifikat,tgl_sertifikat, DATE(khp.created_at) as tgl, nama_b_indo, nama_b_inggris, file, bobot, kategori FROM khp LEFT JOIN krp ON khp.kode = krp.kode LEFT JOIN mahasiswa ON khp.npm=mahasiswa.npm WHERE kategori = '$kategori' AND status = '' AND khp.npm='$data_id'");
+      <!-- bawah krp -->
+      <div style="border: 1px solid black; background-color:#042366;" class="table-header text-white p-2 mb-3">Data KHP</div>
+       <?php
+         $query = mysqli_query($koneksi, "SELECT khp.id as id_khp, khp.kode,no_sertifikat,tgl_sertifikat, DATE(khp.created_at) as tgl, nama_b_indo, nama_b_inggris, file, bobot, kategori FROM khp LEFT JOIN krp ON khp.kode = krp.kode LEFT JOIN mahasiswa ON khp.npm=mahasiswa.npm  WHERE status = '' AND khp.npm='$data_id' and khp.tahun='$tahunAjaran' and khp.periode='$periode'");
 
     $jumlah_data = mysqli_num_rows($query);
 
-    if ($jumlah_data == 0) {
+    if ($jumlah_data == 0) { ?>
+         <?php
         // 🔸 Tampilkan alert jika data kosong
-        echo '<div class="alert alert-warning alert-dismissible fade show mt-0 ms-3 me-3" role="alert">
-                Belum ada data yang ditambahkan pada Kategori <strong>' . htmlspecialchars($kategori) . '</strong> ... !!!
+        echo '<div class="alert alert-warning alert-dismissible fade show mt-0 ms-4 me-4" role="alert">
+                Belum ada data KHP yang ditambahkan<strong>' . htmlspecialchars($kategori) . '</strong> ... !!!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>';
     } else {
@@ -744,14 +928,14 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
 
 <div class="mb-3">
     <label class="form-label">Preview File</label>
-    
-    <iframe id="filePreview<?= $row['id_khp'] ?>" 
+    <center>
+    <iframe  id="filePreview<?= $row['id_khp'] ?>" 
             src="<?php echo !empty($row['file']) ? '././dist/img/file_skpi_mhs/' . rawurlencode($row['file']) : '' ?>" 
-            width="100%" 
-            height="300px" 
-            style="border: 1px solid #ccc; <?php echo empty($row['file']) ? 'display: none;' : '' ?>">
+            width="70%" 
+            height="250px" 
+            style="border: 1px solid #ccc; <?php echo empty($row['file']) ? 'display: none;' : '' ?>" >
     </iframe>
-    
+    </center>
     <?php if (empty($row['file'])): ?>
         <div id="noFileMessage<?= $row['id_khp'] ?>" class="text-center p-3" style="border: 1px dashed #ccc;">
             Tidak ada preview file.
@@ -762,7 +946,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
           <!-- Tombol -->
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            <button type="submit" class="btn btn-primary" name="update">Update</button>
+            <button type="submit" class="btn btn-primary" name="updateSebelumSetuju">Update</button>
           </div>
         </form>
       </div>
@@ -771,271 +955,265 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
 </div>
 
 <!-- end update modal -->
-                    <?php } ?>
-                        <!-- <tr>
-                        <td></td>
-                        <td colspan="3" class="text-center"><b>Total</b></td>
-                        <td><b><?= $total_bobot; ?></b></td>
-                        <td></td>
-                        <td></td>
-                        </tr> -->
+                    <?php } } ?>
+
                 </tbody>
             </table>
         </div>
-        <?php
-    }
-} }
-?>
-    </div>
-
-</div>
-<?php } else { ?>
-    <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
-  Anda sudah mengisi Kartu Hasil Partisipasi (KHP) Periode Aktif. <b><?= $tahunAjaran ?>-<?= $periode ?></b>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-
+      <!-- end bawah krp -->
 <?php } ?>
-<!-- Histori -->
- <div class="histori">
-     <div class="table-header text-white">Riwayat KHP Periode Sebelumnya</div>
-        <div class="table-container">
-        <table id="tabelRiwayat" class="activity-table table table-hover">
-            <thead>
-            <tr>
-                <th>No</th>
-                <th>Periode</th>
-                <th>Kategori</th>
-                <th>Judul (Idn)</th>
-                <th>Judul (Eng)</th>
-                <th>file</th>
-                <th>Skor</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php 
-                    $no = 1;
-                    $total_bobot = 0;
-                    $query=mysqli_query($koneksi,"SELECT khp.id AS id_khp,khp.tahun,khp.periode,khp.keterangan, krp.kategori,khp.bobot_disetujui, krp.bobot, khp.*, mahasiswa.*
-                    FROM khp
-                    JOIN mahasiswa ON khp.npm = mahasiswa.npm
-                    JOIN krp on khp.kode=krp.kode
-                   WHERE khp.npm = '$data_id' AND (khp.status = 'menunggu' OR khp.status = 'diterima'OR khp.status = 'ditolak')");
-                    while($row = mysqli_fetch_assoc($query)) { 
-                        $total_bobot += $row['bobot_disetujui'];
-                        ?>
-                        <tr>
-                            <td><b><?= $no++; ?></b></td>
-                            <td><b><?= $row['tahun'] ?>-<?=$row['periode'] ?></b></td>
-                            <td><?= $row['kategori'] ?></td>
-                            <td><?= $row['nama_b_indo'] ?></td>
-                            <td><?= $row['nama_b_inggris'] ?></td>
-                           
-                            <td>
-                               <a href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
-                                   <i class="bi bi-eye fs-5"></i>
+
+    </div>
+
+
+    <?php } else { ?>
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+      Anda sudah mengisi Kartu Hasil Partisipasi (KHP) Periode Aktif. <b><?= $tahunAjaran ?>-<?= $periode ?></b>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <?php } ?>
+    <!-- Histori -->
+     <div class="histori">
+         <div class="table-header text-white">Riwayat KHP Periode Sebelumnya</div>
+            <div class="table-container">
+            <table id="tabelRiwayat" class="activity-table table table-hover">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Periode</th>
+                    <th>Kategori</th>
+                    <th>Judul (Idn)</th>
+                    <th>Judul (Eng)</th>
+                    <th>file</th>
+                    <th>Skor</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php 
+                        $no = 1;
+                        $total_bobot = 0;
+                        $query=mysqli_query($koneksi,"SELECT khp.id AS id_khp,khp.tahun,khp.periode,khp.keterangan, krp.kategori,khp.bobot_disetujui, krp.bobot, khp.*, mahasiswa.*
+                        FROM khp
+                        JOIN mahasiswa ON khp.npm = mahasiswa.npm
+                        JOIN krp on khp.kode=krp.kode
+                       WHERE khp.npm = '$data_id' AND (khp.status = 'menunggu' OR khp.status = 'diterima'OR khp.status = 'ditolak')");
+                        while($row = mysqli_fetch_assoc($query)) { 
+                            $total_bobot += $row['bobot_disetujui'];
+                            ?>
+                            <tr>
+                                <td><b><?= $no++; ?></b></td>
+                                <td><b><?= $row['tahun'] ?>-<?=$row['periode'] ?></b></td>
+                                <td><?= $row['kategori'] ?></td>
+                                <td><?= $row['nama_b_indo'] ?></td>
+                                <td><?= $row['nama_b_inggris'] ?></td>
+                               
+                                <td>
+                                   <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#modalView<?= $row['id_khp'] ?>" title="View">
+                                       <i class="bi bi-eye fs-5"></i>
+                                    </a>
+    
+                                  <a class="text-decoration-none" href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" title="Download" download>
+                                    <i class="bi bi-cloud-download fs-5"></i>
                                 </a>
-
-                              <a href="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" title="Download" download>
-                                <i class="bi bi-cloud-download fs-5"></i>
-                            </a>
-                            </td>
-                            <!-- <td><?= $row['tahun'] ?> | <?= $row['periode'] ?></td> -->
-
-                            <td>
-                            <?php if($row['status']=='diterima'){ ?>
-                              <?= $row['bobot_disetujui'] ?>
-                              <?php }else{
-                                echo "-";
-                              } ?>
-                            </td>
-                            <td>
-                              <?php if($row['status']=='menunggu'){ ?>
-                              <span class="badge bg-warning text-white"><?= $row['status'] ?></span>
-                              <?php }
-                              elseif($row['status']=='diterima'){ ?>
-                                <span class="badge bg-success text-white"><?= $row['status'] ?></span>
-                                <?php } 
-                            elseif($row['status']=='ditolak'){ ?>
-                                <span class="badge bg-danger text-white"><?= $row['status'] ?></span>
-                                <?php } 
-                                ?>
-                            </td>
-                            <td>
-                               <?php if($row['status']=='menunggu' || $row['status']=='ditolak'){ ?>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalUpdate<?= $row['id_khp'] ?>" title="Update" class="btn text-primary btn-sm">
-                                    <i class="fa fa-edit fa-lg"></i>
-                                </a>
-                                       <?php }
-                                       elseif($row['status']=='diterima'){ ?>
-                                        -
-                                         <?php } 
-                                         ?>
-                            </td>
-                        </tr>
-
-<!-- modal view histori-->
-<div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-      <div class="modal-header">
-        <?php $kate=$row['kategori']; ?>
-        <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                </td>
+                                <!-- <td><?= $row['tahun'] ?> | <?= $row['periode'] ?></td> -->
+    
+                                <td>
+                                <?php if($row['status']=='diterima'){ ?>
+                                  <?= $row['bobot_disetujui'] ?>
+                                  <?php }else{
+                                    echo "-";
+                                  } ?>
+                                </td>
+                                <td>
+                                  <?php if($row['status']=='menunggu'){ ?>
+                                  <span class="badge bg-warning text-white"><?= $row['status'] ?></span>
+                                  <?php }
+                                  elseif($row['status']=='diterima'){ ?>
+                                    <span class="badge bg-success text-white"><?= $row['status'] ?></span>
+                                    <?php } 
+                                elseif($row['status']=='ditolak'){ ?>
+                                    <span class="badge bg-danger text-white"><?= $row['status'] ?></span>
+                                    <?php } 
+                                    ?>
+                                </td>
+                                <td>
+                                   <?php if($row['status']=='menunggu' || $row['status']=='ditolak'){ ?>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalUpdate<?= $row['id_khp'] ?>" title="Update" class="btn text-primary btn-sm">
+                                        <i class="fa fa-edit fa-lg"></i>
+                                    </a>
+                                           <?php }
+                                           elseif($row['status']=='diterima'){ ?>
+                                            -
+                                             <?php } 
+                                             ?>
+                                </td>
+                            </tr>
+    
+    <!-- modal view histori-->
+    <div class="modal fade" id="modalView<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <?php $kate=$row['kategori']; ?>
+            <h1 class="modal-title" id="exampleModalLabel">File Kegiatan - <?= htmlspecialchars($kate) ?></h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+    
+                  <center>
+                <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+            </center>
+    
+    
+              <!-- Tombol -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+              
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-
-              <center>
-            <iframe src="././dist/img/file_skpi_mhs/<?= $row['file'] ?>" width="90%" height="300px"></iframe>
+    </div>
+    <!-- end modal view -->
+    
+    
+                             <!-- Modal Update histori -->
+    <div class="modal fade" id="modalUpdate<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title" id="exampleModalLabel">Update Kegiatan - <?= htmlspecialchars($row['kategori']) ?></h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+            <form action="" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="gambarLama" value="<?= $row['file'] ?>">
+              <input type="hidden" name="id_khp" value="<?= htmlspecialchars($row['id_khp']) ?>">
+                
+              <?php if($row['status']=='ditolak'){ ?>
+              <div class="mb-3">
+                <label class="form-label text-red" style="width:100%; margin:auto; text-align: center; font-weight: bold; font-size: 18px;">Keterangan penolakan</label>
+                <textarea class="form-control" name="nama_b_indo" readonly><?= htmlspecialchars($row['keterangan']) ?></textarea>
+              </div>
+              <?php } ?>
+              <!-- Nama Kegiatan Indonesia -->
+              <div class="mb-3">
+                <label class="form-label">Nama Kegiatan ( B.Indonesia)</label>
+                <textarea class="form-control" name="nama_b_indo" placeholder="Tulis Lengkap dengan Tahun dan Tempat Pelaksanaan"><?= htmlspecialchars($row['nama_b_indo']) ?></textarea>
+              </div>
+    
+              <!-- Nama Kegiatan Inggris -->
+              <div class="mb-3">
+                <label class="form-label">Nama Kegiatan ( B.Inggris)</label>
+                <textarea class="form-control" name="nama_b_inggris" placeholder="Write Theme/Title, Year Place, Activity Completly"><?= htmlspecialchars($row['nama_b_inggris']) ?></textarea>
+              </div>
+    
+              <!-- Pilih Kegiatan -->
+              <div class="mb-3">
+                <label class="form-label">Pilih Kegiatan</label>
+                <select class="form-select" name="kegiatan" required>
+                  <?php
+                  $kategorii=$row['kategori'];
+                    $kode_terpilih = $row['kode'];
+                    $query_kode = mysqli_query($koneksi, "SELECT kategori, nama FROM krp WHERE kode = '$kode_terpilih'");
+                    $data_kode = mysqli_fetch_assoc($query_kode);
+                  ?>
+                  <option value="<?= htmlspecialchars($row['kode']) ?>" selected>
+                    <?= $data_kode['nama'] . ' - (' . $data_kode['kategori'] . ')' ?>
+                  </option>
+                  <?php
+                  if ($kategorii) {
+                    $query_kategori = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori = '$kategorii'");
+                    while ($opt = mysqli_fetch_assoc($query_kategori)) {
+                      echo '<option value="' . htmlspecialchars($opt['kode']) . '">' . htmlspecialchars($opt['nama']) . '</option>';
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
+    
+              <!-- Tanggal Diterbitkan -->
+              <div class="mb-3">
+                <label class="form-label">Tanggal Diterbitkan/Disahkan</label>
+                <?php $tanggalFix = !empty($row['tgl_sertifikat']) ? date('Y-m-d', strtotime($row['tgl_sertifikat'])) : ''; ?>
+                <input type="date" class="form-control" name="tanggal" value="<?= htmlspecialchars($tanggalFix) ?>">
+              </div>
+    
+              <!-- Nomor Sertifikat -->
+              <div class="mb-3">
+                <label class="form-label">No Sert/SK/HAKI/ISSN/ISBN/Keterangan Lainnya</label>
+                <input type="text" class="form-control" name="no" placeholder="No Sertifikat/SK/Lainnya" value="<?= htmlspecialchars($row['no_sertifikat']) ?>">
+              </div>
+    
+               <!-- File -->
+             <div class="mb-3">
+        <label class="form-label">Ganti File (Opsional)</label>
+        
+        <input type="file" 
+               class="form-control" 
+               name="file" 
+               id="fileInput<?= $row['id_khp'] ?>" 
+               onchange="previewFile(event, 'filePreview<?= $row['id_khp'] ?>', 'currentFileText<?= $row['id_khp'] ?>')">
+        
+        <small class="form-text text-muted" id="currentFileText<?= $row['id_khp'] ?>">
+            <?php if (!empty($row['file'])): ?>
+                File saat ini: <?= htmlspecialchars($row['file']) ?>
+            <?php else: ?>
+                Tidak ada file yang diunggah.
+            <?php endif; ?>
+        </small>
+    </div>
+    
+    <div class="mb-3">
+        <label class="form-label">Preview File</label>
+        <center>
+        <iframe id="filePreview<?= $row['id_khp'] ?>" 
+                src="<?php echo !empty($row['file']) ? '././dist/img/file_skpi_mhs/' . rawurlencode($row['file']) : '' ?>" 
+                width="90%" 
+                height="300px" 
+                style="border: 1px solid #ccc; <?php echo empty($row['file']) ? 'display: none;' : '' ?>">
+        </iframe>
         </center>
-
-
-          <!-- Tombol -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-          
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- end modal view -->
-
-
-                         <!-- Modal Update histori -->
-<div class="modal fade" id="modalUpdate<?= $row['id_khp'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">Update Kegiatan - <?= htmlspecialchars($row['kategori']) ?></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="gambarLama" value="<?= $row['file'] ?>">
-          <input type="hidden" name="id_khp" value="<?= htmlspecialchars($row['id_khp']) ?>">
-            
-          <?php if($row['status']=='ditolak'){ ?>
-          <div class="mb-3">
-            <label class="form-label text-red" style="width:100%; margin:auto; text-align: center; font-weight: bold; font-size: 18px;">Keterangan penolakan</label>
-            <textarea class="form-control" name="nama_b_indo" readonly><?= htmlspecialchars($row['keterangan']) ?></textarea>
-          </div>
-          <?php } ?>
-          <!-- Nama Kegiatan Indonesia -->
-          <div class="mb-3">
-            <label class="form-label">Nama Kegiatan ( B.Indonesia)</label>
-            <textarea class="form-control" name="nama_b_indo" placeholder="Tulis Lengkap dengan Tahun dan Tempat Pelaksanaan"><?= htmlspecialchars($row['nama_b_indo']) ?></textarea>
-          </div>
-
-          <!-- Nama Kegiatan Inggris -->
-          <div class="mb-3">
-            <label class="form-label">Nama Kegiatan ( B.Inggris)</label>
-            <textarea class="form-control" name="nama_b_inggris" placeholder="Write Theme/Title, Year Place, Activity Completly"><?= htmlspecialchars($row['nama_b_inggris']) ?></textarea>
-          </div>
-
-          <!-- Pilih Kegiatan -->
-          <div class="mb-3">
-            <label class="form-label">Pilih Kegiatan</label>
-            <select class="form-select" name="kegiatan" required>
-              <?php
-              $kategorii=$row['kategori'];
-                $kode_terpilih = $row['kode'];
-                $query_kode = mysqli_query($koneksi, "SELECT kategori, nama FROM krp WHERE kode = '$kode_terpilih'");
-                $data_kode = mysqli_fetch_assoc($query_kode);
-              ?>
-              <option value="<?= htmlspecialchars($row['kode']) ?>" selected>
-                <?= $data_kode['nama'] . ' - (' . $data_kode['kategori'] . ')' ?>
-              </option>
-              <?php
-              if ($kategorii) {
-                $query_kategori = mysqli_query($koneksi, "SELECT * FROM krp WHERE kategori = '$kategorii'");
-                while ($opt = mysqli_fetch_assoc($query_kategori)) {
-                  echo '<option value="' . htmlspecialchars($opt['kode']) . '">' . htmlspecialchars($opt['nama']) . '</option>';
-                }
-              }
-              ?>
-            </select>
-          </div>
-
-          <!-- Tanggal Diterbitkan -->
-          <div class="mb-3">
-            <label class="form-label">Tanggal Diterbitkan/Disahkan</label>
-            <?php $tanggalFix = !empty($row['tgl_sertifikat']) ? date('Y-m-d', strtotime($row['tgl_sertifikat'])) : ''; ?>
-            <input type="date" class="form-control" name="tanggal" value="<?= htmlspecialchars($tanggalFix) ?>">
-          </div>
-
-          <!-- Nomor Sertifikat -->
-          <div class="mb-3">
-            <label class="form-label">No Sert/SK/HAKI/ISSN/ISBN/Keterangan Lainnya</label>
-            <input type="text" class="form-control" name="no" placeholder="No Sertifikat/SK/Lainnya" value="<?= htmlspecialchars($row['no_sertifikat']) ?>">
-          </div>
-
-           <!-- File -->
-         <div class="mb-3">
-    <label class="form-label">Ganti File (Opsional)</label>
     
-    <input type="file" 
-           class="form-control" 
-           name="file" 
-           id="fileInput<?= $row['id_khp'] ?>" 
-           onchange="previewFile(event, 'filePreview<?= $row['id_khp'] ?>', 'currentFileText<?= $row['id_khp'] ?>')">
-    
-    <small class="form-text text-muted" id="currentFileText<?= $row['id_khp'] ?>">
-        <?php if (!empty($row['file'])): ?>
-            File saat ini: <?= htmlspecialchars($row['file']) ?>
-        <?php else: ?>
-            Tidak ada file yang diunggah.
+        
+        <?php if (empty($row['file'])): ?>
+            <div id="noFileMessage<?= $row['id_khp'] ?>" class="text-center p-3" style="border: 1px dashed #ccc;">
+                Tidak ada preview file.
+            </div>
         <?php endif; ?>
-    </small>
-</div>
-
-<div class="mb-3">
-    <label class="form-label">Preview File</label>
-    <center>
-    <iframe id="filePreview<?= $row['id_khp'] ?>" 
-            src="<?php echo !empty($row['file']) ? '././dist/img/file_skpi_mhs/' . rawurlencode($row['file']) : '' ?>" 
-            width="90%" 
-            height="300px" 
-            style="border: 1px solid #ccc; <?php echo empty($row['file']) ? 'display: none;' : '' ?>">
-    </iframe>
-    </center>
-
+    </div>
     
-    <?php if (empty($row['file'])): ?>
-        <div id="noFileMessage<?= $row['id_khp'] ?>" class="text-center p-3" style="border: 1px dashed #ccc;">
-            Tidak ada preview file.
-        </div>
-    <?php endif; ?>
-</div>
-
-          <!-- Tombol -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            <button type="submit" class="btn btn-primary" name="update">Update</button>
+              <!-- Tombol -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary" name="update">Update</button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
+    
+    <!-- end update modal -->
+                        <?php } ?>
+                        <tr>
+                            <td></td>
+                            <td colspan="5" class="text-center"><b>Total</b></td>
+                            <td><b><?= $total_bobot; ?></b></td>
+                            <td></td>
+                            <td></td>
+                            </tr>
+                </tbody>
+            </table>
+            </div>
+         </div>
+        <!-- end Histori -->
 </div>
-
-<!-- end update modal -->
-                    <?php } ?>
-                    <tr>
-                        <td></td>
-                        <td colspan="5" class="text-center"><b>Total</b></td>
-                        <td><b><?= $total_bobot; ?></b></td>
-                        <td></td>
-                        <td></td>
-                        </tr>
-            </tbody>
-        </table>
-        </div>
-     </div>
-    <!-- end Histori -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 
@@ -1430,6 +1608,45 @@ $id_krp=$_POST['id_krp'];
 }
 
 
+if(isset($_POST['updateSebelumSetuju'])){
+  $id=htmlspecialchars($_POST['id_khp']);
+  $gl=htmlspecialchars($_POST['gambarLama']);
+  $nama_indo=htmlspecialchars($_POST['nama_b_indo']);
+  $nama_inggris=htmlspecialchars($_POST['nama_b_inggris']);
+  $kode=htmlspecialchars($_POST['kegiatan']);
+  $tanggal=htmlspecialchars($_POST['tanggal']);
+  $no=htmlspecialchars($_POST['no']);
+      // Menangani gambar
+$file = ($_FILES['file']['error'] === 4) ? $gl : upload();
+
+  $update=mysqli_query($koneksi,"UPDATE khp SET
+  nama_b_indo='$nama_indo',
+  nama_b_inggris='$nama_inggris',
+  tgl_sertifikat='$tanggal',
+  no_sertifikat='$no',
+  kode='$kode',
+  file='$file'
+  WHERE id=$id
+  ");
+
+  if ($update) {
+    echo "<script>
+    Swal.fire({title: 'Tambah Data Berhasil',text: '',icon: 'success',confirmButtonText: 'OK'
+    }).then((result) => {if (result.value){
+        document.location.href='?page=khp';
+        }
+    })</script>";
+} else {
+    echo "<script>
+    Swal.fire({title: 'Tambah Data Gagal',text: '',icon: 'error',confirmButtonText: 'OK'
+    }).then((result) => {if (result.value){
+        document.location.href='?page=khp';
+        }
+    })</script>";
+}
+
+
+}
 if(isset($_POST['update'])){
   $id=htmlspecialchars($_POST['id_khp']);
   $gl=htmlspecialchars($_POST['gambarLama']);

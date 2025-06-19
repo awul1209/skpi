@@ -24,6 +24,12 @@ if (isset($_GET['page'])) {
         case 'data-krp':
             include 'admin/krp/review_krp.php';
             break;
+        case 'add-krp':
+            include 'admin/krp/add_krp.php';
+            break;
+        case 'proses-add-krp':
+            include 'admin/krp/proses_add_krp.php';
+            break;
         case 'khp':
             include 'admin/khp/index.php';
             break;

@@ -293,27 +293,78 @@ while ($data = mysqli_fetch_assoc($result)) {
 
 <?php foreach ($mahasiswa_list as $data): ?>
 
-    <div class="modal fade" id="modalView<?= $data['npm'] ?>" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title">Detail Mahasiswa</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>NPM:</strong> <?= htmlspecialchars($data['npm']) ?></li>
-                                <li class="list-group-item"><strong>Nama:</strong> <?= htmlspecialchars($data['nama_lengkap']) ?></li>
-                                <li class="list-group-item"><strong>Prodi:</strong> <?= htmlspecialchars($data['nama_prodi']) ?></li>
-                                <li class="list-group-item"><strong>Gender:</strong> <?= htmlspecialchars($data['jenis_kelamin']) ?></li>
-                                <li class="list-group-item"><strong>No. HP:</strong> <?= htmlspecialchars($data['no_tlp']) ?></li>
-                            </ul>
-                        </div>
+   <?php
+// Asumsi Anda sudah mengambil data mahasiswa ke dalam variabel $data
+// $data = mysqli_fetch_assoc($query_result);
+?>
+
+<div class="modal fade" id="modalView<?= $data['npm'] ?>" tabindex="-1" aria-labelledby="modalViewLabel<?= $data['npm'] ?>" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalViewLabel<?= $data['npm'] ?>">
+                    <i class="bi bi-person-badge-fill me-2"></i>Detail Mahasiswa
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <?php 
+                        // Tentukan path foto, gunakan placeholder jika foto tidak ada
+                        $foto_path = 'dist/img/fotomhs/' . htmlspecialchars($data['foto']);
+                        $placeholder_path = './path/ke/folder/foto/placeholder.png'; // Siapkan gambar placeholder
+
+                        if (!empty($data['foto']) && file_exists($foto_path)) {
+                            echo '<img src="' . $foto_path . '" class="img-fluid rounded-circle shadow-sm mb-3" alt="Foto ' . htmlspecialchars($data['nama_lengkap']) . '" style="width: 150px; height: 150px; object-fit: cover;">';
+                        } else {
+                            echo '<img src="' . $placeholder_path . '" class="img-fluid rounded-circle shadow-sm mb-3" alt="Foto tidak tersedia" style="width: 150px; height: 150px; object-fit: cover;">';
+                        }
+                        ?>
+                        <h6 class="fw-bold"><?= htmlspecialchars($data['nama_lengkap']) ?></h6>
+                        <p class="text-muted"><?= htmlspecialchars($data['npm']) ?></p>
+                    </div>
+
+                    <div class="col-md-8">
+                        
+                        <h5 class="mb-3 border-bottom pb-2"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Informasi Pribadi</h5>
+                        
+                        <dl class="row">
+                            <dt class="col-sm-4">Tempat, Tgl Lahir</dt>
+                            <dd class="col-sm-8">
+                                <?php 
+                                // Format tanggal lahir agar lebih mudah dibaca
+                                $tgl_lahir = !empty($data['tanggal_lahir']) ? date("d F Y", strtotime($data['tanggal_lahir'])) : '-';
+                                echo htmlspecialchars($data['tempat_lahir']) . ', ' . $tgl_lahir;
+                                ?>
+                            </dd>
+
+                            <dt class="col-sm-4">Jenis Kelamin</dt>
+                            <dd class="col-sm-8"><?= htmlspecialchars($data['jenis_kelamin']) ?></dd>
+                        </dl>
+
+                        <h5 class="mt-4 mb-3 border-bottom pb-2"><i class="bi bi-building-fill-check me-2 text-primary"></i>Akademik & Kontak</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Program Studi</dt>
+                            <dd class="col-sm-8"><?= htmlspecialchars($data['nama_prodi']) ?></dd>
+                            
+                            <dt class="col-sm-4">No. HP</dt>
+                            <dd class="col-sm-8"><?= htmlspecialchars($data['no_tlp']) ?></dd>
+
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8">
+                                <a href="mailto:<?= htmlspecialchars($data['email']) ?>"><?= htmlspecialchars($data['email']) ?></a>
+                            </dd>
+                        </dl>
                     </div>
                 </div>
-                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
+</div>
 
     <?php if ($is_admin_view): ?>
     <div class="modal fade" id="modalEdit<?= $data['npm'] ?>" tabindex="-1" aria-labelledby="modalEditLabel<?= $data['npm'] ?>" aria-hidden="true">

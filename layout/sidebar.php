@@ -196,7 +196,7 @@
 
 						<li class="nav-item has-treeview" style="transition: all 0.3s ease-in-out;">
 						<a href="?page=krp" class="nav-link" 
-							style="display: flex; align-items: center; gap:6px; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;<?php echo ($page == 'krp' || $page=='data-krp') ? 'background-color: rgba(255, 255, 255, 0.2); border-left: 3px solid white;' : ''; ?>">
+							style="display: flex; align-items: center; gap:6px; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;<?php echo ($page == 'krp' || $page=='data-krp' || $page=='add-krp'|| $page=='proses-add-krp') ? 'background-color: rgba(255, 255, 255, 0.2); border-left: 3px solid white;' : ''; ?>">
 								<img src="dist/img/iconsidebar/2.png" alt="" style="width: 20px; margin-left: 0px; margin-right: 4px;">
 								<p style="color: #fff;">KRP</p>
 							</a>
