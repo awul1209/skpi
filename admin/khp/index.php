@@ -113,7 +113,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <!-- <td><?= $row['bobot'] ?></td> -->
 <td>
                 <?php if($row['file'] == ''){ ?>
-                    <a href="#" download>❌</a>
+                    <a href="#" class="text-decoration-none" download>❌</a>
                 <?php } else { ?>
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         
@@ -211,7 +211,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <!-- <td><?= $row['bobot'] ?></td> -->
 <td>
                 <?php if($row['file'] == ''){ ?>
-                    <a href="#" download>❌</a>
+                    <a href="#" class="text-decoration-none" download>❌</a>
                 <?php } else { ?>
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         
@@ -310,7 +310,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                             <!-- <td><?= $row['bobot'] ?></td> -->
 <td>
                 <?php if($row['file'] == ''){ ?>
-                    <a href="#" download>❌</a>
+                    <a href="#" class="text-decoration-none" download>❌</a>
                 <?php } else { ?>
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         
@@ -409,7 +409,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                                 <!-- <td><?= $row['bobot'] ?></td> -->
 <td>
                 <?php if($row['file'] == ''){ ?>
-                    <a href="#" download>❌</a>
+                    <a href="#" class="text-decoration-none" download>❌</a>
                 <?php } else { ?>
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         
@@ -508,7 +508,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                                 <!-- <td><?= $row['bobot'] ?></td> -->
 <td>
                 <?php if($row['file'] == ''){ ?>
-                    <a href="#" download>❌</a>
+                    <a href="#" class="text-decoration-none" download>❌</a>
                 <?php } else { ?>
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         
@@ -586,11 +586,11 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
                ?>
                 <div class="d-grid mb-2">
                 <?php if (!$all_file_terisi){ ?>
-                <a href="#" class="btn btn-warning">File tidak lengkap</a>
+                <a href="#" class="btn btn-warning tex-decoration-none">File tidak lengkap</a>
                 <?php } else{ ?>
                 <?php
                     $cek=mysqli_query($koneksi,"SELECT * FROM khp WHERE status='' and tahun='$tahunAjaran' and periode='$periode' and npm='$data_id';");
-                    if(mysqli_num_rows($cek) > 0){?>
+                    if(mysqli_num_rows($cek) > 0){ ?>
                 <form action="" method="post">
                     <button class="btn btn-validasi text-white" type="submit" name="validasi">Validasi</button>
                 </form>
@@ -725,32 +725,7 @@ if(mysqli_num_rows($query_cekkhp) <= 0){ ?>
             <strong>Belum ada data KRP yang dipilih</strong> ... !!!
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>';
-    }
-
-    // Cek semua data dari khp yang statusnya kosong
-    $query_check_all = mysqli_query($koneksi, "SELECT file FROM khp 
-        LEFT JOIN krp ON khp.kode = krp.kode 
-        WHERE status = ''");
-
-    $jumlah_data = mysqli_num_rows($query_check_all);
-    $all_file_terisi = true;
-
-    while ($row = mysqli_fetch_assoc($query_check_all)) {
-        if (empty($row['file'])) {
-            $all_file_terisi = false;
-            break;
-        }
-    }
-    ?>
-    <div class="d-grid mb-2">
-        <?php if (!$all_file_terisi): ?>
-            <a href="#" class="btn btn-warning">File tidak lengkap</a>
-        <?php else: ?>
-            <form action="" method="post">
-                <button class="btn btn-validasi text-white" type="submit" name="validasi">Validasi</button>
-            </form>
-        <?php endif; ?>
-    </div>
+    } ?>
 </div>
 
       <!-- end krp-->
