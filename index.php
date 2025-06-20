@@ -1,5 +1,6 @@
 <?php
 // Mulai Sesion
+date_default_timezone_set('Asia/Jakarta');
 session_start();
 include 'vendor/autoload.php';
 //KONEKSI DB
@@ -33,6 +34,43 @@ if (isset($_SESSION['login']) == '' && isset($_SESSION['s_iduser']) == '') {
 
 $page = $_GET['page'];
 
+// fs
+function human_time_ago($timestamp) {
+    // Mengubah timestamp dari argumen menjadi format waktu UNIX
+    $time_ago = $timestamp;
+    
+    // Mendapatkan waktu saat ini
+    $current_time = time();
+    
+    // Menghitung selisih waktu dalam detik
+    $time_difference = $current_time - $time_ago;
+    $seconds = $time_difference;
+    
+    // Mengonversi detik ke menit, jam, hari, dst.
+    $minutes      = round($seconds / 60);           // 60 detik
+    $hours        = round($seconds / 3600);         // 60 * 60
+    $days         = round($seconds / 86400);        // 60 * 60 * 24
+    $weeks        = round($seconds / 604800);       // 60 * 60 * 24 * 7
+    $months       = round($seconds / 2629440);      // ((365+365+365+366)/5/12) * 86400
+    $years        = round($seconds / 31553280);     // (365+365+365+366)/5 * 86400
+    
+    // Logika untuk menentukan teks yang ditampilkan
+    if ($seconds <= 60) {
+        return "Baru saja";
+    } else if ($minutes <= 60) {
+        return ($minutes == 1) ? "1 menit yang lalu" : "$minutes menit yang lalu";
+    } else if ($hours <= 24) {
+        return ($hours == 1) ? "1 jam yang lalu" : "$hours jam yang lalu";
+    } else if ($days <= 7) {
+        return ($days == 1) ? "Kemarin" : "$days hari yang lalu";
+    } else if ($weeks <= 4.3) { // 4.3 minggu dalam sebulan
+        return ($weeks == 1) ? "1 minggu yang lalu" : "$weeks minggu yang lalu";
+    } else if ($months <= 12) {
+        return ($months == 1) ? "1 bulan yang lalu" : "$months bulan yang lalu";
+    } else {
+        return ($years == 1) ? "1 tahun yang lalu" : "$years tahun yang lalu";
+    }
+}
 
 $bulan = date('n'); // Bulan dalam angka 1–12
 if ($bulan >= 2 && $bulan <= 7) {
@@ -184,6 +222,34 @@ function hari_ini()
 		<!-- /.control-sidebar -->
 	</div>
 
+	<!-- modal notif -->
+	 <div class="modal fade" id="detailNotifikasiModal" tabindex="-1" aria-labelledby="detailNotifikasiModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="detailNotifikasiModalLabel">
+            <i class="bi bi-info-circle-fill me-2"></i>Detail Status Pengajuan KHP
+        </h5>
+        
+      </div>
+      <div class="modal-body" id="detailNotifikasiBody">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Memuat data...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+		<a href="?page=home_mhs" class="text-decoration-none">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+		</a>
+      </div>
+    </div>
+  </div>
+</div>
+	<!-- end modal notif -->
+
 	<style>
     .nav-item:hover {
 		border-left: 3px solid white;
@@ -313,6 +379,103 @@ let btn=document.getElementById("btn");
 let none=document.getElementById("none");
 btn.addEventListener("click",function(){
 	none.classList.toggle('none');
+});
+</script>
+
+<script>
+// Pastikan script berjalan setelah semua dokumen siap
+$(document).ready(function() {
+
+    // Menggunakan event delegation yang lebih tangguh dengan jQuery
+    $(document).on('click', '.notification-link', function(e) {
+        // 1. Mencegah link berpindah halaman
+        e.preventDefault();
+
+        var link = $(this); // Simpan elemen <a> yang diklik
+        var idNotif = link.data('id-notif');
+        var idKhp = link.data('id-khp');
+        var isUnread = link.hasClass('bg-light');
+
+        // 2. Tampilkan modal dengan status "loading"
+        $('#detailNotifikasiBody').html(`
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Memuat data detail...</p>
+            </div>`);
+        
+        // Menampilkan modal dengan cara Bootstrap 4 / jQuery
+        $('#detailNotifikasiModal').modal('show');
+
+        // 3. FETCH PERTAMA: Ambil detail KHP (AJAX menggunakan jQuery)
+        $.ajax({
+            url: 'layout/get_detail_khp.php', // Pastikan path ini benar
+            type: 'GET',
+            data: { id_khp: idKhp },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    const data = response.data;
+                    let statusBadge = '';
+                    if (data.status === 'diterima') {
+                        statusBadge = `<span class="badge badge-success">DITERIMA</span>`;
+                    } else if (data.status === 'ditolak') {
+                        statusBadge = `<span class="badge badge-danger">DITOLAK</span>`;
+                    }
+                    
+                    // Format tanggal
+                    const updatedAt = new Date(data.updated_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+
+                    const contentHTML = `
+                        <dl class="row">
+                            <dt class="col-sm-4">Nama Kegiatan</dt>
+                            <dd class="col-sm-8">: ${data.nama_b_indo || '-'}</dd>
+                            <dt class="col-sm-4">Status</dt>
+                            <dd class="col-sm-8">: ${statusBadge}</dd>
+                            <dt class="col-sm-4">Tgl Diperbarui</dt>
+                            <dd class="col-sm-8">: ${updatedAt}</dd>
+                            ${data.status === 'ditolak' ? `
+                            <dt class="col-sm-4">Keterangan</dt>
+                            <dd class="col-sm-8 text-danger fst-italic">: ${data.keterangan || '-'}</dd>` : ''}
+                            ${data.status === 'diterima' ? `
+                            <dt class="col-sm-4">Bobot</dt>
+                            <dd class="col-sm-8 fw-bold">: ${data.bobot_disetujui || '0'}</dd>` : ''}
+                        </dl>`;
+                    $('#detailNotifikasiBody').html(contentHTML);
+                } else {
+                    $('#detailNotifikasiBody').html(`<p class="text-center text-danger">${response.message}</p>`);
+                }
+            },
+            error: function() {
+                $('#detailNotifikasiBody').html(`<p class="text-center text-danger">Gagal memuat data. Periksa koneksi atau path file.</p>`);
+            }
+        });
+
+        // 4. FETCH KEDUA: Tandai notifikasi sebagai "dibaca" (jika belum dibaca)
+        if (isUnread) {
+            $.ajax({
+                url: 'layout/tandai_dibaca.php', // Pastikan path ini benar
+                type: 'POST',
+                data: { id_notif: idNotif },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status === 'success') {
+                        link.removeClass('bg-light');
+                        const badge = $('.navbar-badge');
+                        if (badge.length) {
+                            let currentCount = parseInt(badge.text());
+                            if (currentCount > 1) {
+                                badge.text(currentCount - 1);
+                            } else {
+                                badge.remove();
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
 });
 </script>
 </body>

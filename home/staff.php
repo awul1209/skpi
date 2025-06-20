@@ -326,16 +326,48 @@ $json_data = json_encode($prodi_data_values);
 if (isset($_POST['setuju'])) {
     $id_khp = $_POST['id_khp'];
     $bobot = $_POST['bobot_disetujui'];
-    $update = mysqli_query($koneksi, "UPDATE khp SET 
-    status='diterima',
-    bobot_disetujui='$bobot'
-    WHERE id='$id_khp'");
 
-    if ($update) {
+    // 1. UPDATE status KHP dengan aman
+    $stmt_update = mysqli_prepare($koneksi, "UPDATE `khp` SET `status`='diterima', `bobot_disetujui`=? WHERE `id`=?");
+    mysqli_stmt_bind_param($stmt_update, "si", $bobot, $id_khp);
+    
+    // Jalankan query update
+    if (mysqli_stmt_execute($stmt_update)) {
+        // Jika UPDATE berhasil, lanjutkan membuat notifikasi
+
+        // 2. Ambil data untuk notifikasi
+        $stmt_get = mysqli_prepare($koneksi, "SELECT `npm`, `nama_b_indo` FROM `khp` WHERE `id`=?");
+        mysqli_stmt_bind_param($stmt_get, "i", $id_khp);
+        mysqli_stmt_execute($stmt_get);
+        $result_data = mysqli_stmt_get_result($stmt_get);
+        $data_khp = mysqli_fetch_assoc($result_data);
+        $npm_mahasiswa = $data_khp['npm'];
+        $nama_kegiatan = $data_khp['nama_b_indo'];
+        mysqli_stmt_close($stmt_get);
+
+        // 3. Buat notifikasi dengan aman
+        $pesan_notif = "Selamat! Pengajuan KHP untuk kegiatan '" . $nama_kegiatan . "' telah DITERIMA.";
+        $tipe_notif = 'diterima';
+        
+        // =====================================================================================
+        // PERBAIKAN UTAMA DI SINI: MENAMBAHKAN BACKTICK (`) PADA NAMA TABEL DAN KOLOM
+        // =====================================================================================
+        $stmt_notif = mysqli_prepare($koneksi, "INSERT INTO `notifikasi` (`khp_id`, `npm`, `pesan`, `tipe`) VALUES (?, ?, ?, ?)");
+        
+        // Jika prepare masih gagal, kita bisa cek di sini
+        if ($stmt_notif === false) {
+            die("Error pada saat prepare statement notifikasi: " . mysqli_error($koneksi));
+        }
+
+        mysqli_stmt_bind_param($stmt_notif, "isss", $id_khp, $npm_mahasiswa, $pesan_notif, $tipe_notif);
+        mysqli_stmt_execute($stmt_notif);
+        mysqli_stmt_close($stmt_notif);
+
+        // Tampilkan pesan sukses
         echo "<script>
         Swal.fire({
             title: 'Diterima',
-            text: '',
+            text: 'Notifikasi telah dikirim.',
             icon: 'success',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -343,11 +375,13 @@ if (isset($_POST['setuju'])) {
                 document.location.href='?page=home_staff';
             }
         })</script>";
+
     } else {
+        // Tampilkan pesan gagal jika UPDATE awal gagal
         echo "<script>
         Swal.fire({
             title: 'Gagal diterima',
-            text: '',
+            text: 'Terjadi kesalahan saat update data.',
             icon: 'error',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -356,18 +390,44 @@ if (isset($_POST['setuju'])) {
             }
         })</script>";
     }
+    mysqli_stmt_close($stmt_update);
 }
-
 if (isset($_POST['tolak'])) {
     $id_khp = $_POST['id_khp'];
-    $ket = $_POST['ket'];
-    $update = mysqli_query($koneksi, "UPDATE khp SET status='ditolak',keterangan='$ket' WHERE id='$id_khp'");
+    $ket = $_POST['ket']; // Keterangan penolakan
 
-    if ($update) {
+    // 1. UPDATE status KHP menjadi 'ditolak' dengan aman
+    $stmt_update = mysqli_prepare($koneksi, "UPDATE `khp` SET `status`='ditolak', `keterangan`=? WHERE `id`=?");
+    mysqli_stmt_bind_param($stmt_update, "si", $ket, $id_khp);
+    
+    // Jalankan query update
+    if (mysqli_stmt_execute($stmt_update)) {
+        // Jika UPDATE berhasil, lanjutkan membuat notifikasi
+
+        // 2. Ambil data NPM dan Nama Kegiatan untuk notifikasi
+        $stmt_get = mysqli_prepare($koneksi, "SELECT `npm`, `nama_b_indo` FROM `khp` WHERE `id`=?");
+        mysqli_stmt_bind_param($stmt_get, "i", $id_khp);
+        mysqli_stmt_execute($stmt_get);
+        $result_data = mysqli_stmt_get_result($stmt_get);
+        $data_khp = mysqli_fetch_assoc($result_data);
+        $npm_mahasiswa = $data_khp['npm'];
+        $nama_kegiatan = $data_khp['nama_b_indo'];
+        mysqli_stmt_close($stmt_get);
+
+        // 3. Buat notifikasi penolakan dengan aman
+        $pesan_notif = "Mohon maaf, pengajuan KHP untuk kegiatan '" . $nama_kegiatan . "' DITOLAK. Keterangan: " . $ket;
+        $tipe_notif = 'ditolak';
+        
+        $stmt_notif = mysqli_prepare($koneksi, "INSERT INTO `notifikasi` (`khp_id`, `npm`, `pesan`, `tipe`) VALUES (?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt_notif, "isss", $id_khp, $npm_mahasiswa, $pesan_notif, $tipe_notif);
+        mysqli_stmt_execute($stmt_notif);
+        mysqli_stmt_close($stmt_notif);
+
+        // Tampilkan pesan sukses
         echo "<script>
         Swal.fire({
-            title: 'Tolak',
-            text: '',
+            title: 'Ditolak',
+            text: 'Notifikasi penolakan telah dikirim.',
             icon: 'success',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -375,11 +435,13 @@ if (isset($_POST['tolak'])) {
                 document.location.href='?page=home_staff';
             }
         })</script>";
+
     } else {
+        // Tampilkan pesan gagal jika UPDATE awal gagal
         echo "<script>
         Swal.fire({
             title: 'Gagal di Tolak',
-            text: '',
+            text: 'Terjadi kesalahan saat update data.',
             icon: 'error',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -388,6 +450,7 @@ if (isset($_POST['tolak'])) {
             }
         })</script>";
     }
+    mysqli_stmt_close($stmt_update);
 }
 ?>
 

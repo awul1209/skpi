@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Jun 2025 pada 13.16
+-- Waktu pembuatan: 20 Jun 2025 pada 02.17
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -62,8 +62,17 @@ CREATE TABLE `khp` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `file` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
+  `bobot_disetujui` int(11) DEFAULT NULL,
   `keterangan` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `khp`
+--
+
+INSERT INTO `khp` (`id`, `kode`, `npm`, `nama_b_indo`, `nama_b_inggris`, `tgl_sertifikat`, `no_sertifikat`, `tahun`, `periode`, `created_at`, `updated_at`, `file`, `status`, `bobot_disetujui`, `keterangan`) VALUES
+(46, 'WU001', '721520055', 'pkkmb kegiatan peserta', 'pkkmb participant activities', '2025-06-01', '03jfss', '2025/2026', 'GENAP', '2025-06-18 21:41:58', '2025-06-20 21:41:58', '68548426483fe.jpg', 'ditolak', 25, 'perbaiki nomor sertifikatnya'),
+(47, 'OR001', '7230520014', 'percobaan saja', 'trial only', '2025-06-01', '03jfss', '2025/2026', 'GENAP', '2025-06-20 00:15:57', '2025-06-20 00:15:57', '6854a83d41684.jpg', 'diterima', 53, '');
 
 -- --------------------------------------------------------
 
@@ -365,7 +374,8 @@ INSERT INTO `krp` (`id`, `kode`, `nama`, `bobot`, `kategori`) VALUES
 (279, 'SO017', 'Kegiatan ESQ (Peserta)', 10, 'Sosial dan Lainnya'),
 (280, 'SO018', 'Kegiatan Jati Diri (Fasilitator)', 30, 'Sosial dan Lainnya'),
 (281, 'SO019', 'Kegiatan Jati Diri (Peserta)', 10, 'Sosial dan Lainnya'),
-(282, 'SO020', 'Kegiatan seminar proposal mahasiswa', 10, 'Sosial dan Lainnya');
+(282, 'SO020', 'Kegiatan seminar proposal mahasiswa', 10, 'Sosial dan Lainnya'),
+(284, 'w783', 'coba', 3, 'organisasi');
 
 -- --------------------------------------------------------
 
@@ -380,9 +390,30 @@ CREATE TABLE `krp_mhs` (
   `tahun` varchar(255) NOT NULL,
   `periode` varchar(50) NOT NULL,
   `bobot` int(11) NOT NULL,
+  `selesai` varchar(15) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `krp_mhs`
+--
+
+INSERT INTO `krp_mhs` (`id`, `kode`, `npm`, `tahun`, `periode`, `bobot`, `selesai`, `created_at`, `updated_at`) VALUES
+(47, 'WU001', '721520055', '2025/2026', 'GENAP', 25, 'y', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(48, 'WU002', '721520055', '2025/2026', 'GENAP', 10, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(49, 'OR001', '721520055', '2025/2026', 'GENAP', 80, 'y', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(50, 'OR002', '721520055', '2025/2026', 'GENAP', 70, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(51, 'OR003', '721520055', '2025/2026', 'GENAP', 60, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(52, 'OR004', '721520055', '2025/2026', 'GENAP', 50, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(53, 'OR005', '721520055', '2025/2026', 'GENAP', 30, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(54, 'OR006', '721520055', '2025/2026', 'GENAP', 60, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(55, 'PI001', '721520055', '2025/2026', 'GENAP', 120, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(56, 'PI002', '721520055', '2025/2026', 'GENAP', 110, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(57, 'MB001', '721520055', '2025/2026', 'GENAP', 100, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(58, 'MB002', '721520055', '2025/2026', 'GENAP', 90, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(59, 'SO001', '721520055', '2025/2026', 'GENAP', 60, '', '2025-06-19 12:40:00', '2025-06-19 12:40:00'),
+(60, 'OR001', '7230520014', '2025/2026', 'GENAP', 80, 'y', '2025-06-20 00:15:14', '2025-06-20 00:15:14');
 
 -- --------------------------------------------------------
 
@@ -422,9 +453,35 @@ CREATE TABLE `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`id_mhs`, `npm`, `nama_lengkap`, `alamat`, `no_tlp`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `agama`, `biaya`, `email`, `skripsi`, `foto`, `tinggal_bersama`, `role_id`, `prodi_id`, `berat_badan`, `tinggi_badan`, `golongan_darah`, `penyakit_diderita`, `saudara_kandung`, `saudara_tiri`, `saudara_angkat`, `password`) VALUES
-(1, '721520055', 'PUTRI WULANDARI AISYAH', 'Sumenep Paberasan jawa timur dusun salosa, kecamatan kota, kabupaten sumenep provinsi jawa timur', '087754772100', 'Perempuan', 'Sumenep', '2002-12-08', 'Islam', 'Orang Tua', 'putriwulandariaisyah32@gmail.com', 'Aplikasi Website E-Prestasi Unija', '682928ae9a33f.png', 'Orang Tua', 2, 1, 38, 153, 'A', 'Asma, Amandel, Mag, Darah rendah', 3, 0, 0, '$2y$10$IAOcFxySdjJjSGAMnYb4suhCSgym2u.HGbNBH7ZEnWPNz3wwsA65.'),
+(1, '721520055', 'PUTRI WULANDARI AISYAH', 'Sumenep Paberasan jawa timur dusun salosa, kecamatan kota, kabupaten sumenep provinsi jawa timur', '087754772100', 'Perempuan', 'Sumenep', '2002-12-08', 'Islam', 'Orang Tua', 'putriwulandariaisyah32@gmail.com', 'Aplikasi Website E-Prestasi Unija', '684a8b618a2ff.jpg', 'Orang Tua', 2, 1, 38, 153, 'A', 'Asma, Amandel, Mag, Darah rendah', 3, 0, 0, '$2y$10$IAOcFxySdjJjSGAMnYb4suhCSgym2u.HGbNBH7ZEnWPNz3wwsA65.'),
 (5, '7230520013', 'Aisyah', 'Jalan Raya Manding Dusun Salosa Manding Daya', '3435', 'Perempuan', 'Sumenep', NULL, NULL, NULL, NULL, '', '', NULL, NULL, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$Y5m3M8MX3eQAAeriY7Ju4OaxffwZ8DgtmlPlvtxx.c0rU7sc28Zze'),
-(6, '7230520014', 'Suprayitno', 'Jalan Raya Jalan', '2335', 'Laki Laki', NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$4i/H3s5Wg/wqMRY2BWOHBORcE9JwluyS3tJIOE3O22TRcDkQnJ9sG');
+(6, '7230520014', 'Suprayitno', 'Jalan Raya Jalan', '2335', 'Laki Laki', NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$4i/H3s5Wg/wqMRY2BWOHBORcE9JwluyS3tJIOE3O22TRcDkQnJ9sG'),
+(7, '2025', 'roni', 'jalan raya abc diubah', '0877653537393', 'Laki-laki', NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$/DbEu8DfEKA09WqFz6D3ruolhTbUBLWf0T1nMRaeToJ1ybfcHvV5m'),
+(14, '893458345', 'saleh', 'Paberasan\r\nSumenep', '087754768652', 'Laki-laki', '', '0000-00-00', '', '', '', '', '684f8f41d6ade.jpg', NULL, NULL, 4, 0, 0, '', '', 0, 0, 0, '$2y$10$rjAQr6oKUn.VB688wo6CFeyS/jCj5iZWTKxN1C5A/jL0os/ZSsA4y');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `notifikasi`
+--
+
+CREATE TABLE `notifikasi` (
+  `id_notif` int(11) NOT NULL,
+  `khp_id` int(11) NOT NULL,
+  `npm` varchar(25) NOT NULL,
+  `pesan` text NOT NULL,
+  `tipe` enum('diterima','ditolak','info') NOT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `notifikasi`
+--
+
+INSERT INTO `notifikasi` (`id_notif`, `khp_id`, `npm`, `pesan`, `tipe`, `is_read`, `created_at`) VALUES
+(3, 46, '721520055', 'Mohon maaf, pengajuan KHP untuk kegiatan \'pkkmb kegiatan peserta\' DITOLAK. Keterangan: perbaiki nomor sertifikatnya', 'ditolak', 1, '2025-05-31 23:51:25'),
+(4, 47, '7230520014', 'Selamat! Pengajuan KHP untuk kegiatan \'percobaan saja\' telah DITERIMA.', 'diterima', 1, '2025-06-20 00:16:24');
 
 -- --------------------------------------------------------
 
@@ -449,7 +506,11 @@ CREATE TABLE `orang_tua` (
 
 INSERT INTO `orang_tua` (`id_ortu`, `npm`, `nama`, `no_telp`, `pendidikan`, `pekerjaan`, `jumlah_penghasilan`, `hubungan`) VALUES
 (1, '721520055', 'Kacung Arifin', '087819301009', 'Tidak Sekolah', 'Petani', '-', 'Ayah'),
-(2, '721520055', 'Busaniati', '081908710755', 'SD', 'Ibu Rumah Tangga', '-', 'Ibu');
+(2, '721520055', 'Busaniati', '081908710755', 'SD', 'Ibu Rumah Tangga', '-', 'Ibu'),
+(3, '2025', '', NULL, NULL, NULL, NULL, 'Ayah'),
+(4, '2025', '', NULL, NULL, NULL, NULL, 'Ibu'),
+(7, '893458345', 'Ayah Coba', '087754768652', '', '', 'NULL', 'Ayah'),
+(8, '893458345', 'Ibu Coba', '087754768652', '', '', 'NULL', 'Ibu');
 
 -- --------------------------------------------------------
 
@@ -518,7 +579,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `username`, `password`, `level`, `prodi_id`, `created_at`, `updated_at`) VALUES
 (1, 'ayyub', '$2y$10$8e2QDEhhp8Rlr96zxyvL/Ob6EkNIv6LvA36Exjcb.c6fYuSACBsB2', 'staff', 1, '2025-03-04 22:38:44', '2025-03-04 22:38:44'),
-(2, 'mahasiswa', '$2y$10$GXtuxhaOFurkSN8LBklccOdCsuh5UGxjnaTTkUJtVUVdm1aqawz1O', 'mahasiswa', 0, '2025-03-05 05:19:14', '2025-03-05 05:19:14'),
+(2, 'admin', '$2y$10$SmgKg9pCxo8c50t27BD3bOCBbzWP434i0i0ZdqBdvTd2FNqepS9Ua', 'admin', 0, '2025-03-05 05:19:14', '2025-03-05 05:19:14'),
 (3, 'pertanian', '$2y$10$cWmjnNrpj82YgBfVnxceHeIsrETj5nywnujveyEmHQTv2f6DWesla', 'staff', 4, '2025-05-05 11:01:08', '2025-05-05 11:01:08');
 
 -- --------------------------------------------------------
@@ -637,6 +698,12 @@ ALTER TABLE `mahasiswa`
   ADD KEY `fk_prodi` (`prodi_id`);
 
 --
+-- Indeks untuk tabel `notifikasi`
+--
+ALTER TABLE `notifikasi`
+  ADD PRIMARY KEY (`id_notif`);
+
+--
 -- Indeks untuk tabel `orang_tua`
 --
 ALTER TABLE `orang_tua`
@@ -681,31 +748,37 @@ ALTER TABLE `fakultas`
 -- AUTO_INCREMENT untuk tabel `khp`
 --
 ALTER TABLE `khp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT untuk tabel `krp`
 --
 ALTER TABLE `krp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=283;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
 
 --
 -- AUTO_INCREMENT untuk tabel `krp_mhs`
 --
 ALTER TABLE `krp_mhs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT untuk tabel `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT untuk tabel `notifikasi`
+--
+ALTER TABLE `notifikasi`
+  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `orang_tua`
 --
 ALTER TABLE `orang_tua`
-  MODIFY `id_ortu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_ortu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `prodi`
