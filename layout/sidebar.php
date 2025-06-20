@@ -48,10 +48,21 @@
 									</p>
 								</a>
 							</li>
+							<li class="nav-item" style="transition: all 0.3s ease-in-out;">
+								<a href="?page=staff" class="nav-link" style="display: flex; align-items: center; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;<?php echo ($page == 'staff') ? 'background-color: rgba(255, 255, 255, 0.2); border-left: 3px solid white;' : ''; ?>">
+										<img src="dist/img/iconsidebar/3.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 8px;">
+								
+								<p  style="color: #fff;">
+									Staff
+									
+									</p>
+								</p>
+							</a>
+							</li>
 
 						<li class="nav-item has-treeview">
 								<a href="#" class="nav-link" 	style="display: flex; align-items: center; gap:6px; padding: 10px; border-radius: 5px; transition: all 0.3s ease-in-out;<?php echo ($page == 'data_mhs_staff') ? 'background-color: rgba(255, 255, 255, 0.2); border-left: 3px solid white;' : ''; ?>">
-									<img src="dist/img/iconsidebar/data.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 4px;">
+									<img src="dist/img/iconsidebar/data.png" alt="" style="width: 23px;margin-left: 0px; margin-right: 2px;">
 									<p  style="color: #fff;">
 										Data Mahasiswa
 										<i class="fas fa-angle-left right"></i>

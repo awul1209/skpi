@@ -14,6 +14,9 @@ if (isset($_GET['page'])) {
         case 'home_staff':
             include 'home/staff.php';
             break;
+        case 'staff':
+            include 'admin/staff/index.php';
+            break;
             // mhs
         case 'biodata':
             include 'admin/biodata/index.php';

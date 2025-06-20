@@ -1,11 +1,5 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <?php
-// Diasumsikan file ini di-include ke dalam file index.php utama Anda
-// dan koneksi.php sudah di-require sebelumnya.
-
-// ===================================================================
-// BAGIAN 1: LOGIKA PEMROSESAN FORM (TAMBAH, EDIT, HAPUS)
-// ===================================================================
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $action = $_POST['action'];
     
@@ -112,7 +106,7 @@ while ($data = mysqli_fetch_assoc($result)) {
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-5">
     <div class="card shadow-sm">
         <div class="card-header text-white" style="background-color: #042366;">
             <h4 class="card-title mb-0"><i class="bi bi-card-list"></i> Manajemen Data KRP</h4>
